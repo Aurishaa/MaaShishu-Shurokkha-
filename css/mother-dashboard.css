@@ -1,0 +1,481 @@
+/* === File: css/mother-dashboard.css (The Final, Stable Version) === */
+
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- 1. The Sidebar --- */
+.sidebar {
+    width: 280px; /* A slightly wider sidebar for clarity */
+    background-color: var(--white-color);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.sidebar-header a {
+    color: var(--dark-text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.sidebar-header img {
+    height: 40px;
+}
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.sidebar-nav {
+    margin-top: 1.5rem;
+    flex-grow: 1; /* Pushes the profile switcher to the bottom */
+}
+.sidebar-nav ul {
+    list-style: none;
+}
+.sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: var(--secondary-text);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+}
+.sidebar-nav li a:hover {
+    background-color: #f0f4f8; /* A very light hover effect */
+    color: var(--dark-text);
+}
+/* The active link is a solid, clear blue */
+.sidebar-nav li.active a {
+    background-color: var(--primary-blue);
+    color: var(--white-color);
+    box-shadow: var(--shadow-soft);
+}
+
+/* --- 2. The Profile Switcher (at the bottom of the sidebar) --- */
+.profile-switcher {
+    margin-top: auto; /* Pushes this to the bottom */
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+.profile-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    color: var(--dark-text);
+}
+.profile-item:hover {
+    background-color: #f0f4f8;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+.avatar-mother {
+    background-color: var(--primary-blue);
+    color: var(--white-color);
+}
+.avatar-child {
+    background-color: var(--soft-pink);
+    color: #c55a71;
+}
+
+/* --- Find this old rule --- */
+/* --- Replace with this new rule --- */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem 4rem;
+    /* --- The new light baby pink background color --- */
+    background-color: #FFF0F5; /* This is a very light, gentle pink (Lavender Blush) */
+    /* Removed the old geometric pattern */
+}
+.main-content-header h1 {
+    font-size: 2.2rem;
+}
+.main-content-header p {
+    color: var(--secondary-text);
+    margin-top: 0.5rem;
+}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+.dashboard-card {
+    padding: 1.5rem; /* Reuses the .content-card style from main.css */
+}
+.dashboard-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+}
+.dashboard-card .icon {
+    font-size: 1.2rem;
+    color: var(--primary-blue);
+    background-color: rgba(58, 134, 255, 0.1);
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.dashboard-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+.dashboard-card .card-body p {
+    margin-bottom: 1.5rem;
+}
+/* === ADD THIS to the BOTTOM of css/mother-dashboard.css === */
+
+/* --- Styles for Professional Page Layouts (like Profile Management) --- */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.profile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.profile-card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+.avatar-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.avatar { /* This style is already in your file, but we ensure it's here */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.avatar-mother { /* Already in your file */
+    background-color: var(--primary-blue);
+    color: var(--white-color);
+}
+.avatar-child { /* Already in your file */
+    background-color: var(--soft-pink);
+    color: #c55a71;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+.form-actions {
+    margin-top: 2rem;
+    text-align: right; /* Pushes button to the right */
+}
+/* === ADD THIS to the BOTTOM of css/mother-dashboard.css === */
+
+/* --- Styles specifically for the Vaccination Tracking Page --- */
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+}
+.page-controls label {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.page-controls select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    min-width: 250px;
+}
+.page-controls select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse; /* Removes space between cells */
+    font-size: 0.95rem;
+}
+.data-table thead {
+    background-color: #f0f4f8; /* A very light gray for the header */
+}
+.data-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--secondary-text);
+    border-bottom: 1px solid var(--border-color);
+}
+.data-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+.data-table tbody tr:last-child td {
+    border-bottom: none; /* Removes the line under the last row */
+}
+
+/* Status Badges for the table */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+.status-completed {
+    background-color: rgba(42, 157, 143, 0.1);
+    color: #1e7d72;
+}
+.status-due {
+    background-color: rgba(231, 111, 81, 0.1);
+    color: #c95d41;
+}
+.status-upcoming {
+    background-color: rgba(233, 196, 106, 0.15);
+    color: #b48c34;
+}
+/* === ADD THIS to the BOTTOM of css/mother-dashboard.css === */
+
+/* --- Styles specifically for the Appointment Scheduling Page --- */
+
+.appointment-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+}
+.appointment-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
+
+.doctor-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover; /* Prevents the image from stretching */
+}
+
+.doctor-info h3 {
+    margin: 0;
+}
+.doctor-info p {
+    margin: 0.25rem 0 0.5rem 0;
+    color: var(--secondary-text);
+}
+.doctor-specialty {
+    display: inline-block;
+    background-color: rgba(255, 179, 193, 0.2);
+    color: #c55a71;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.appointment-details {
+    text-align: right;
+    margin-left: auto; /* Pushes this section to the far right */
+}
+.appointment-details p {
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.appointment-details .btn {
+    margin-top: 0.5rem;
+}
+/* === ADD THIS to the BOTTOM of css/mother-dashboard.css === */
+
+/* --- Styles for the NEW Find a Provider (Locations) Page --- */
+.location-card {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+.location-icon {
+    font-size: 1.5rem;
+    color: var(--primary-blue);
+    background-color: rgba(58, 134, 255, 0.1);
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.location-info h3 { margin: 0; }
+.location-info p { margin: 0.25rem 0 0.5rem 0; color: var(--secondary-text); }
+.location-info .tags { display: flex; gap: 0.5rem; }
+.tag {
+    background-color: #f0f4f8;
+    color: var(--secondary-text);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.location-actions { margin-left: auto; text-align: right; }
+.location-actions p { font-weight: 600; }
+/* === ADD THIS to the BOTTOM of css/mother-dashboard.css === */
+
+/* --- Styles for the Professional Appointment Pages --- */
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap; /* Allows filters to wrap on smaller screens */
+    gap: 1rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 2rem;
+}
+.filter-bar .form-group {
+    margin-bottom: 0;
+    flex-grow: 1; /* Allows inputs to grow and fill space */
+}
+.filter-bar .btn {
+    align-self: flex-end; /* Aligns the button with the bottom of the inputs */
+}
+
+.section-header {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.doctor-profile-card {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on small screens */
+    gap: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.doctor-profile-card .doctor-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid var(--border-color);
+}
+.doctor-details {
+    flex: 2; /* Takes up more space */
+    min-width: 250px;
+}
+.doctor-details h3 { margin: 0; }
+.doctor-details .qualifications { color: var(--secondary-text); font-size: 0.9rem; margin: 0.25rem 0; }
+.doctor-details .specialty {
+    display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem;
+    font-weight: 600; margin-top: 0.5rem;
+}
+.specialty-gyn { background-color: rgba(255, 179, 193, 0.2); color: #c55a71; }
+.specialty-ped { background-color: rgba(58, 134, 255, 0.1); color: var(--primary-blue); }
+
+.hospital-info { flex: 2; min-width: 250px; }
+.hospital-info p { margin: 0; font-weight: 500; }
+.hospital-info .address { font-size: 0.9rem; color: var(--secondary-text); }
+.availability { font-weight: 600; color: #1e7d72; margin-top: 0.5rem; }
+
+.booking-section {
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+/* === PASTE THIS NEW CODE AT THE BOTTOM of css/mother-dashboard.css === */
+
+/* --- Style for the new Doctor Avatar (replaces image) --- */
+.doctor-avatar-initials {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 600;
+    flex-shrink: 0; /* Prevents the avatar from shrinking on small screens */
+}
+.avatar-gyn {
+    background-color: var(--soft-pink);
+    color: #c55a71; /* A darker pink for the text */
+}
+.avatar-ped {
+    background-color: rgba(58, 134, 255, 0.1); /* A light blue */
+    color: var(--primary-blue);
+}
+
+/* --- A small correction for the appointment-list-item to work with the new avatar --- */
+.appointment-list-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+}
+.appointment-list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}

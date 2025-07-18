@@ -1,0 +1,98 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #F8F4FF;
+  margin: 0;
+}
+
+.header {
+  background-color: #A6D6D6;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header h1 {
+  color: #3E8E7E;
+  font-size: 1.8rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #3E8E7E;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #2C4F4F;
+}
+
+.appointment-main {
+  padding: 40px 20px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.booking-section, .appointment-list {
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.booking-section h2, .appointment-list h2 {
+  color: #3E8E7E;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px;
+  color: #3E8E7E;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+button {
+  background-color: #FCD5CE;
+  color: #3E8E7E;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #FFB5A7;
+}
+
+#appointmentList {
+  list-style: none;
+  padding-left: 0;
+}
+
+#appointmentList li {
+  background-color: #F0F0FA;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}

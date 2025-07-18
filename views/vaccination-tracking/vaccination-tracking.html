@@ -1,0 +1,78 @@
+<!-- === File: views/vaccination-tracking/vaccination-tracking.html (Mother's Version) === -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vaccinations - MaaShishu Shurokkha</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/mother-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+                    <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
+                    <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
+                    <li class="logout-link"><a id="logoutButton" href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+                </ul>
+            </nav>
+            <div class="profile-switcher">
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-mother">MN</div>
+                    <span>My Profile</span>
+                </a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-child">CN</div>
+                    <span>Child's Dashboard</span>
+                </a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="page-header">
+                <h1>My Vaccination Schedule</h1>
+                <p>Keep track of your personal immunizations, especially during pregnancy.</p>
+            </header>
+
+            <div class="content-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Vaccine</th>
+                            <th>Recommended For</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- This is an example of what the mother's data would look like -->
+                        <tr>
+                            <td>Tdap (Tetanus, Diphtheria, Pertussis)</td>
+                            <td>Each Pregnancy (27-36 weeks)</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>Influenza (Flu Shot)</td>
+                            <td>Annually</td>
+                            <td><span class="status-badge status-due">DUE</span></td>
+                        </tr>
+                        <tr>
+                            <td>COVID-19 Vaccine</td>
+                            <td>As per guidelines</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

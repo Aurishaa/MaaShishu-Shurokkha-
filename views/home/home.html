@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MaaShishu Shurokkha - Home</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f0f8ff;
+    }
+    .role-selection {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .role-card {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      cursor: pointer;
+      width: 180px;
+      font-size: 1.2rem;
+      color: #2a6f97;
+      transition: background-color 0.3s;
+    }
+    .role-card:hover {
+      background-color: #cce7ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to MaaShishu Shurokkha</h1>
+  <p>Please select your role to continue:</p>
+
+  <div class="role-selection">
+    <div class="role-card" onclick="goToRole('mother')">Mother</div>
+    <div class="role-card" onclick="goToRole('child')">Child</div>
+    <div class="role-card" onclick="goToRole('doctor')">Doctor</div>
+  </div>
+
+  <script>
+    function goToRole(role) {
+      // Redirect based on role
+      if (role === 'mother') {
+        window.location.href = 'views/login/login.html?role=mother';
+      } else if (role === 'child') {
+        window.location.href = 'views/login/login.html?role=child';
+      } else if (role === 'doctor') {
+        window.location.href = 'views/login/login.html?role=doctor';
+      }
+    }
+  </script>
+
+</body>
+</html>

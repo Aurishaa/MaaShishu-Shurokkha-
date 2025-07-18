@@ -1,0 +1,71 @@
+<!-- === File: views/appointment-scheduling/appointment-scheduling.html (FINAL, WITH BOOKING BUTTONS) === -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Appointments</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/mother-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a></div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
+                    <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
+                    <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
+                    <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+                </ul>
+            </nav>
+            <div class="profile-switcher">
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>My Profile</span></a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item"><div class="avatar avatar-child">CN</div><span>Child's Dashboard</span></a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="page-header"><h1>My Appointments</h1><p>View your upcoming appointments and book new consultations.</p></header>
+            
+            <section class="content-card">
+                <h3 class="section-header">Upcoming Appointments</h3>
+                <div class="appointment-list-item">
+                    <div class="doctor-avatar-initials avatar-gyn">AR</div>
+                    <div class="doctor-info"><h3>Dr. Anika Rahman</h3><p>MBBS, FCPS (Gynae)</p></div>
+                    <div class="appointment-details"><p>August 15, 2025 at 10:30 AM</p><div class="form-actions"><button class="btn">Cancel</button><button class="btn btn-primary">Reschedule</button></div></div>
+                </div>
+            </section>
+
+            <section style="margin-top: 2rem;">
+                <h3 class="section-header">Book a New Consultation with a Gynecologist</h3>
+                <div class="provider-list">
+                    <!-- Doctor Profile 1 -->
+                    <div class="doctor-profile-card content-card">
+                        <div class="doctor-avatar-initials avatar-gyn">SC</div>
+                        <div class="doctor-details"><h3>Prof. Dr. Sameena Chowdhury</h3><p class="qualifications">MBBS, FCPS (Gynae), MS (Gynae)</p><p>25 Years of Experience</p><span class="specialty specialty-gyn">Gynecologist</span></div>
+                        <div class="hospital-info"><p><i class="fa-solid fa-hospital"></i> Evercare Hospital Dhaka</p><p class="address">Plot 81, Block E, Bashundhara R/A</p><p class="availability"><i class="fa-solid fa-clock"></i> Mon, Wed (7 PM - 9 PM)</p></div>
+                        <div class="booking-section">
+                            <!-- THE MISSING BOOKING BUTTON -->
+                            <button class="btn btn-primary">Book Appointment</button>
+                        </div>
+                    </div>
+                    <!-- Doctor Profile 2 -->
+                    <div class="doctor-profile-card content-card">
+                        <div class="doctor-avatar-initials avatar-gyn">NM</div>
+                        <div class="doctor-details"><h3>Dr. Nusrat Mahmud</h3><p class="qualifications">MBBS, DGO, FCPS (Gynae)</p><p>15 Years of Experience</p><span class="specialty specialty-gyn">Gynecologist</span></div>
+                        <div class="hospital-info"><p><i class="fa-solid fa-hospital"></i> Labaid Specialized Hospital</p><p class="address">House 1, Road 4, Dhanmondi</p><p class="availability"><i class="fa-solid fa-clock"></i> Tue, Thu (5 PM - 8 PM)</p></div>
+                        <div class="booking-section">
+                            <!-- THE MISSING BOOKING BUTTON -->
+                            <button class="btn btn-primary">Book Appointment</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

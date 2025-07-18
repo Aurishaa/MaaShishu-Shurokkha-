@@ -1,0 +1,85 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #F8F4FF;
+  margin: 0;
+}
+
+.tracker-header {
+  background-color: #A6D6D6;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tracker-header h1 {
+  color: #3E8E7E;
+  font-size: 1.8rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #3E8E7E;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #2C4F4F;
+}
+
+.tracker-main {
+  padding: 40px 20px;
+}
+
+.tracker-main h2 {
+  color: #3E8E7E;
+  margin-bottom: 30px;
+}
+
+.vaccine-table {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.vaccine-table th,
+.vaccine-table td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.vaccine-table th {
+  background-color: #A6D6D6;
+  color: #3E8E7E;
+}
+
+.status-due {
+  color: #E67E22;
+  font-weight: bold;
+}
+
+.status-complete {
+  color: #27AE60;
+  font-weight: bold;
+}
+
+.status-missed {
+  color: #E74C3C;
+  font-weight: bold;
+}

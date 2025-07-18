@@ -1,0 +1,109 @@
+<!-- === File: views/profile-management/profile-management.html (FINAL, STABLE VERSION) === -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Management - MaaShishu Shurokkha</title>
+    <!-- Links to the stable main.css and the dashboard CSS -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/mother-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <!-- Note: The "active" class is now on this page's link -->
+                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
+                    <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+                    <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
+                    <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
+                    <li class="logout-link"><a id="logoutButton" href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+                </ul>
+            </nav>
+            <div class="profile-switcher">
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-mother">MN</div>
+                    <span>My Profile</span>
+                </a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-child">CN</div>
+                    <span>Child's Dashboard</span>
+                </a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Profile Management</h1>
+                <p>Update your personal information and manage your children's profiles.</p>
+            </header>
+            
+            <!-- Mother's Profile Section -->
+            <section class="content-card">
+                <div class="profile-card-header">
+                    <div class="avatar-group">
+                        <div class="avatar avatar-mother">MN</div>
+                        <h3>Your Personal Profile</h3>
+                    </div>
+                </div>
+                <form>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="motherName">Full Name</label>
+                            <input type="text" id="motherName" value="[Mother's Name]">
+                        </div>
+                        <div class="form-group">
+                            <label for="motherDob">Date of Birth</label>
+                            <input type="date" id="motherDob" value="1990-05-15">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="motherEmail">Email Address</label>
+                        <input type="email" id="motherEmail" value="[mother@example.com]" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save My Profile</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Children's Profiles Section -->
+            <section class="content-card" style="margin-top: 2rem;">
+                <div class="profile-card-header">
+                    <div class="avatar-group">
+                        <div class="avatar avatar-child"><i class="fa-solid fa-baby"></i></div>
+                        <h3>Children's Profiles</h3>
+                    </div>
+                    <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Child</button>
+                </div>
+                
+                <!-- This is an example of what ONE child's profile form would look like -->
+                <form>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="childName1">Child's Full Name</label>
+                            <input type="text" id="childName1" value="[Child's Name]">
+                        </div>
+                        <div class="form-group">
+                            <label for="childDob1">Child's Date of Birth</label>
+                            <input type="date" id="childDob1" value="2024-01-10">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Child's Profile</button>
+                    </div>
+                </form>
+
+            </section>
+        </main>
+    </div>
+    <!-- Script tags will be added here later to make the buttons functional -->
+</body>
+</html>

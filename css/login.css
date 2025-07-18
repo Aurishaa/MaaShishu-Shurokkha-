@@ -1,0 +1,37 @@
+/* === Paste this code into css/login.css === */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    /* The beautiful background image with a color overlay */
+    background-image: linear-gradient(to top, rgba(58, 134, 255, 0.7), rgba(255, 179, 193, 0.7)), url('https://images.unsplash.com/photo-1604881991720-f91add269612?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+}
+
+.auth-box {
+    background-color: var(--white-color);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-medium);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.auth-logo { margin-bottom: 2rem; }
+.auth-logo img { height: 60px; }
+.auth-box h2 { font-weight: 700; margin-bottom: 0.5rem; }
+.auth-box p { margin-bottom: 2.5rem; color: var(--secondary-text); }
+.auth-box .btn-primary { width: 100%; margin-top: 1rem; padding: 14px; font-size: 1rem; }
+.auth-switch { margin-top: 2rem; }
+
+/* Styles for the Mother/Doctor role selector */
+.role-selection { display: flex; gap: 1rem; }
+.role-option { flex: 1; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; padding: 12px; }
+.role-option label { display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 0; }
+.role-option input[type="radio"] { display: none; }
+.role-option input[type="radio"]:checked + label { color: var(--primary-blue); font-weight: 600; }
+.role-option:has(input:checked) { border-color: var(--primary-blue); background-color: rgba(58, 134, 255, 0.05); }
