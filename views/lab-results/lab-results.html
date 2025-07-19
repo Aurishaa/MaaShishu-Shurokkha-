@@ -1,0 +1,101 @@
+<!-- === File: views/lab-results/lab-results.html (FINAL, SELF-CONTAINED VERSION) === -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Results - Doctor Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <style>
+        /* --- 1. GLOBAL FOUNDATION & DASHBOARD LAYOUT (Copied for consistency) --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        :root {
+            --primary-blue: #3A86FF; --soft-pink: #FFB3C1; --dark-text: #2B2D42;
+            --secondary-text: #8D99AE; --background-color: #F8F9FA; --white-color: #FFFFFF;
+            --border-color: #E5E5E5; --shadow-soft: 0 4px 12px rgba(43, 45, 66, 0.08);
+            --shadow-medium: 0 6px 20px rgba(43, 45, 66, 0.12);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--background-color); color: var(--dark-text); line-height: 1.6; }
+        a { text-decoration: none; color: var(--primary-blue); font-weight: 500; }
+        .btn { padding: 12px 28px; border-radius: 8px; font-weight: 500; text-align: center; display: inline-block; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .btn-primary { background-color: var(--primary-blue); color: var(--white-color); box-shadow: var(--shadow-soft); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+        .content-card { background: var(--white-color); padding: 2rem; border-radius: 16px; box-shadow: var(--shadow-soft); }
+        .dashboard-layout { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 280px; background-color: var(--white-color); border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column; padding: 1.5rem; flex-shrink: 0;
+        }
+        .main-content { flex-grow: 1; padding: 2rem 4rem; background-color: #FFF0F5; } /* Baby pink background */
+        .sidebar-header { display: flex; align-items: center; gap: 10px; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-header a { color: var(--dark-text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        .sidebar-header img { height: 40px; }
+        .sidebar-header h3 { margin: 0; font-size: 1.1rem; }
+        .sidebar-nav { margin-top: 1.5rem; flex-grow: 1; }
+        .sidebar-nav ul { list-style: none; }
+        .sidebar-nav li a {
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 8px;
+            color: var(--secondary-text); font-weight: 500; transition: all 0.2s ease; margin-bottom: 0.5rem; text-decoration: none;
+        }
+        .sidebar-nav li a:hover { background-color: #f0f4f8; color: var(--dark-text); }
+        .sidebar-nav li.active a { background-color: var(--primary-blue); color: var(--white-color); box-shadow: var(--shadow-soft); }
+        .profile-switcher { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+        .profile-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; text-decoration: none; color: var(--dark-text); }
+        .avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; }
+        .page-header { margin-bottom: 2rem; }
+        .page-header h1 { font-size: 2.2rem; }
+        .page-header p { color: var(--secondary-text); margin-top: 0.5rem; }
+
+        /* --- 2. "LAB RESULTS" SPECIFIC STYLES --- */
+        .results-table { width: 100%; border-collapse: collapse; }
+        .results-table thead { background-color: #f0f4f8; }
+        .results-table th { padding: 14px 16px; text-align: left; font-weight: 600; color: var(--secondary-text); border-bottom: 2px solid var(--border-color); }
+        .results-table td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .results-table tbody tr:last-child td { border-bottom: none; }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 0.8rem; }
+        .status-normal { background-color: rgba(42, 157, 143, 0.1); color: #1e7d72; }
+        .status-abnormal { background-color: rgba(231, 111, 81, 0.1); color: #c95d41; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../doctor-dashboard/doctor-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="../doctor-dashboard/doctor-dashboard.html"><i class="fa-solid fa-notes-medical fa-fw"></i> Dashboard</a></li>
+                    <li><a href="../my-patients/my-patients.html"><i class="fa-solid fa-users fa-fw"></i> My Patients</a></li>
+                    <li><a href="../my-schedule/my-schedule.html"><i class="fa-solid fa-calendar-days fa-fw"></i> My Schedule</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-vial-virus fa-fw"></i> Lab Results</a></li>
+                    <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+                </ul>
+            </nav>
+            <div class="profile-switcher">
+                <div class="profile-item">
+                    <div class="avatar" style="background-color: #6c757d; color: white;">DR</div>
+                    <span>Dr. [Doctor's Name]</span>
+                </div>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Lab Results</h1>
+                <p>Review and manage new lab results for your patients.</p>
+            </header>
+            <div class="content-card">
+                <table class="results-table">
+                    <thead><tr><th>Patient Name</th><th>Test Type</th><th>Date Received</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody>
+                        <tr><td>Anika Rahman</td><td>Ultrasound</td><td>2025-07-19</td><td><span class="status-badge status-normal">Normal</span></td><td><a href="#" class="btn">View Report</a></td></tr>
+                        <tr><td>Fatima Sheikh's Child</td><td>Blood Test (CBC)</td><td>2025-07-18</td><td><span class="status-badge status-abnormal">Abnormal</span></td><td><a href="#" class="btn btn-primary">View Report</a></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,11 +1,10 @@
-<!-- === File: views/profile-management/profile-management.html (FINAL, STABLE VERSION) === -->
+<!-- === File: views/profile-management/profile-management.html (UPDATED) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Management - MaaShishu Shurokkha</title>
-    <!-- Links to the stable main.css and the dashboard CSS -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/mother-dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -18,7 +17,6 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <!-- Note: The "active" class is now on this page's link -->
                     <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
                     <li class="active"><a href="#"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
                     <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
@@ -30,11 +28,11 @@
             </nav>
             <div class="profile-switcher">
                 <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
-                    <div class="avatar avatar-mother">MN</div>
+                    <div class="avatar" id="motherAvatar">M</div>
                     <span>My Profile</span>
                 </a>
                 <a href="../child-dashboard/child-dashboard.html" class="profile-item">
-                    <div class="avatar avatar-child">CN</div>
+                    <div class="avatar avatar-child">C</div>
                     <span>Child's Dashboard</span>
                 </a>
             </div>
@@ -44,29 +42,37 @@
                 <h1>Profile Management</h1>
                 <p>Update your personal information and manage your children's profiles.</p>
             </header>
-            
-            <!-- Mother's Profile Section -->
+
+            <!-- Mother's Profile -->
             <section class="content-card">
                 <div class="profile-card-header">
                     <div class="avatar-group">
-                        <div class="avatar avatar-mother">MN</div>
+                        <div class="avatar avatar-mother">M</div>
                         <h3>Your Personal Profile</h3>
                     </div>
                 </div>
-                <form>
+                <form id="motherProfileForm">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="motherName">Full Name</label>
-                            <input type="text" id="motherName" value="[Mother's Name]">
+                            <input type="text" id="motherName" required>
                         </div>
                         <div class="form-group">
                             <label for="motherDob">Date of Birth</label>
-                            <input type="date" id="motherDob" value="1990-05-15">
+                            <input type="date" id="motherDob" required>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="motherEmail">Email Address</label>
-                        <input type="email" id="motherEmail" value="[mother@example.com]" readonly style="background-color: #f8f9fa; cursor: not-allowed;">
+                        <div class="form-group">
+                            <label for="motherPhone">Phone Number</label>
+                            <input type="tel" id="motherPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="motherAddress">Address</label>
+                            <input type="text" id="motherAddress">
+                        </div>
+                        <div class="form-group">
+                            <label for="motherEmail">Email</label>
+                            <input type="email" id="motherEmail" readonly style="background-color: #f8f9fa;">
+                        </div>
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Save My Profile</button>
@@ -74,36 +80,64 @@
                 </form>
             </section>
 
-            <!-- Children's Profiles Section -->
+            <!-- Children Profiles -->
             <section class="content-card" style="margin-top: 2rem;">
                 <div class="profile-card-header">
                     <div class="avatar-group">
                         <div class="avatar avatar-child"><i class="fa-solid fa-baby"></i></div>
                         <h3>Children's Profiles</h3>
                     </div>
-                    <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add Child</button>
                 </div>
-                
-                <!-- This is an example of what ONE child's profile form would look like -->
-                <form>
+                <form id="childProfileForm">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="childName1">Child's Full Name</label>
-                            <input type="text" id="childName1" value="[Child's Name]">
+                            <label for="childName">Child's Full Name</label>
+                            <input type="text" id="childName" required>
                         </div>
                         <div class="form-group">
-                            <label for="childDob1">Child's Date of Birth</label>
-                            <input type="date" id="childDob1" value="2024-01-10">
+                            <label for="childDob">Date of Birth</label>
+                            <input type="date" id="childDob" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="childGender">Gender</label>
+                            <select id="childGender">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="childBloodGroup">Blood Group</label>
+                            <input type="text" id="childBloodGroup">
+                        </div>
+                        <div class="form-group">
+                            <label for="childWeight">Weight (kg)</label>
+                            <input type="number" step="0.1" id="childWeight">
+                        </div>
+                        <div class="form-group">
+                            <label for="childAllergies">Allergies</label>
+                            <input type="text" id="childAllergies">
+                        </div>
+                        <div class="form-group">
+                            <label for="childChronicConditions">Chronic Conditions</label>
+                            <input type="text" id="childChronicConditions">
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Save Child's Profile</button>
+                        <button type="submit" class="btn btn-primary">Add Child</button>
                     </div>
                 </form>
-
+                <div id="childList" style="margin-top: 2rem;"></div>
             </section>
         </main>
     </div>
-    <!-- Script tags will be added here later to make the buttons functional -->
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../../js/firebase-config.js"></script>
+    <script src="../../js/profile-management.js"></script>
 </body>
 </html>

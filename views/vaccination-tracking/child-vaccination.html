@@ -1,83 +1,64 @@
-<!-- === File: views/vaccination-tracking/child-vaccination.html (Child's Version) === -->
+<!-- === File: views/vaccination-tracking/child-vaccination.html (Final, Corrected Version) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Child's Vaccinations - MaaShishu Shurokkha</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/mother-dashboard.css"> <!-- We can reuse the same CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Child's Vaccination Schedule - MaaShishu Shurokkha</title>
+    <link rel="stylesheet" href="../../css/main.css"/>
+    <link rel="stylesheet" href="../../css/child-dashboard.css"/>
+    <link rel="stylesheet" href="../../css/vaccination-tracking.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
 </head>
-<body>
+<body class="child-dashboard-page">
     <div class="dashboard-layout">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"/><h3>MaaShishu Shurokkha</h3></a>
             </div>
-            <!-- This sidebar would reflect the Child's Dashboard context -->
             <nav class="sidebar-nav">
-                 <ul>
-                    <li><a href="../child-dashboard/child-dashboard.html"><i class="fa-solid fa-chart-line fa-fw"></i> Child's Dashboard</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
-                    <li><a href="#"><i class="fa-solid fa-user-pen fa-fw"></i> Child's Profile</a></li>
+                <p class="nav-section-title enhanced-title">👶 Child's Health</p>
+                <ul>
+                    <li><a href="../child-dashboard/child-dashboard.html"><i class="fa-solid fa-chart-line fa-fw"></i> Dashboard</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Schedule</a></li>
+                    <li><a href="#"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+                    <li><a href="#"><i class="fa-solid fa-file-medical fa-fw"></i> Medical History</a></li>
+                    <li><a href="#"><i class="fa-solid fa-hospital-user fa-fw"></i> Nearby Providers</a></li>
                 </ul>
             </nav>
             <div class="profile-switcher">
-                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
-                    <div class="avatar avatar-mother">MN</div>
-                    <span>Back to My Dashboard</span>
-                </a>
-                <a href="../child-dashboard/child-dashboard.html" class="profile-item">
-                    <div class="avatar avatar-child">CN</div>
-                    <span>[Child's Name]'s Profile</span>
-                </a>
+                <p class="nav-section-title">Switch View</p>
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>Mother Dashboard</span></a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item active"><div class="avatar avatar-child">CN</div><span>Child Dashboard</span></a>
             </div>
         </aside>
+
+        <!-- Main Content -->
         <main class="main-content">
-            <header class="page-header">
-                <h1>Vaccination Tracking for [Child's Name]</h1>
-                <p>An overview of the complete immunization schedule.</p>
+            <header class="main-content-header">
+                <div class="header-text-content">
+                    <h1>Vaccination Schedule</h1>
+                    <p>An overview of the complete immunization schedule for your child.</p>
+                </div>
+                <div class="child-selector">
+                    <label for="childSelector"><i class="fa-solid fa-child"></i> Select Child:</label>
+                    <select id="childSelector"><option selected>Child's Name</option></select>
+                </div>
             </header>
 
-            <div class="page-controls">
-                <label for="childSelect">Viewing schedule for:</label>
-                <!-- This dropdown would list all of the mother's children -->
-                <select id="childSelect" name="childSelect">
-                    <option value="child1">[Child's Name 1]</option>
-                    <option value="child2">[Child's Name 2]</option>
-                </select>
-            </div>
-
             <div class="content-card">
+                <!-- This table structure is now simpler -->
                 <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Vaccine</th>
-                            <th>Dose</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                    <!-- The header is now hidden by CSS -->
+                    <thead><tr><th>Vaccine</th><th>Dose</th><th>Due Date</th><th>Status</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td>BCG</td>
-                            <td>Single Dose</td>
-                            <td>2024-01-15</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>MMR</td>
-                            <td>1 of 2</td>
-                            <td>2025-01-10</td>
-                            <td><span class="status-badge status-due">DUE</span></td>
-                        </tr>
-                        <tr>
-                            <td>Varicella (Chickenpox)</td>
-                            <td>1 of 2</td>
-                            <td>2025-04-10</td>
-                            <td><span class="status-badge status-upcoming">Upcoming</span></td>
-                        </tr>
+                        <tr><td>BCG</td><td>Single Dose</td><td>January 15, 2024</td><td><span class="status-badge status-completed">Completed</span></td></tr>
+                        <tr><td>Hepatitis B (Birth)</td><td>1 of 4</td><td>January 15, 2024</td><td><span class="status-badge status-completed">Completed</span></td></tr>
+                        <tr><td>Polio</td><td>2 of 4</td><td>May 10, 2024</td><td><span class="status-badge status-completed">Completed</span></td></tr>
+                        <tr><td>MMR</td><td>1 of 2</td><td>January 10, 2025</td><td><span class="status-badge status-due">DUE</span></td></tr>
+                        <tr><td>Varicella (Chickenpox)</td><td>1 of 2</td><td>April 10, 2025</td><td><span class="status-badge status-upcoming">Upcoming</span></td></tr>
+                        <tr><td>Hepatitis A</td><td>1 of 2</td><td>July 10, 2025</td><td><span class="status-badge status-upcoming">Upcoming</span></td></tr>
                     </tbody>
                 </table>
             </div>

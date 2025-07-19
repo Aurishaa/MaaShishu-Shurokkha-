@@ -1,37 +1,76 @@
+<!-- === File: views/community-support/community-support.html (FINAL, CORRECTED VERSION) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Community Support</title>
-  <link rel="stylesheet" href="../../css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Hub - MaaShishu Shurokkha</title>
+    <!-- Links to the main theme and its own correct stylesheet -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/community-support.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <!-- This is the same sidebar structure as the Mother's Dashboard -->
+            <div class="sidebar-header">
+                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
+                    <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+                    <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
+                    <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+                </ul>
+            </nav>
+            <div class="profile-switcher">
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>My Profile</span></a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item"><div class="avatar avatar-child">CN</div><span>Child's Dashboard</span></a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <header class="page-header">
+                <h1>Community Hub</h1>
+                <p>Connect with other mothers, share your experiences, and ask questions.</p>
+            </header>
+            
+            <div class="forum-layout">
+                <section class="forum-feed">
+                    <div class="content-card ask-question-card">
+                        <form>
+                            <div class="form-group">
+                                <label for="new-post">Ask a question about pregnancy or postpartum...</label>
+                                <textarea id="new-post" placeholder="What's on your mind?"></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Post to Community</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="post-card content-card">
+                        <div class="post-header">
+                            <div class="avatar avatar-mother">AR</div>
+                            <div class="post-author-info"><h4>Anika Rahman</h4><p>Asked 2 hours ago</p></div>
+                        </div>
+                        <div class="post-body"><p>I'm in my 8th week and the nausea is really getting to me. Has anyone found anything that actually works?</p></div>
+                        <div class="post-actions"><a href="#"><i class="fa-solid fa-comment"></i> 12 Replies</a><a href="#"><i class="fa-solid fa-bookmark"></i> Save</a></div>
+                    </div>
+                </section>
 
-  <header>
-    <img src="../../logo.png" alt="Logo">
-    <h1>MaaShishu Shurokkha</h1>
-  </header>
-
-  <div class="container">
-    <div class="card">
-      <h2>Peer Support Forum</h2>
-      <p>Join discussions with other moms, share stories, or ask questions.</p>
-      <button onclick="joinForum()">Join Forum</button>
+                <aside class="forum-sidebar">
+                    <div class="widget content-card">
+                        <h3 class="widget-title">Need Professional Advice?</h3>
+                        <p>For personal medical questions, it's best to speak with a healthcare provider.</p>
+                        <a href="../appointment-scheduling/appointment-scheduling.html" class="btn btn-primary">Consult a Professional</a>
+                    </div>
+                </aside>
+            </div>
+        </main>
     </div>
-
-    <div class="card">
-      <h2>Counseling Services</h2>
-      <p>Connect with a licensed mental health professional.</p>
-      <button onclick="bookCounselor()">Book Counseling</button>
-    </div>
-
-    <div class="card">
-      <h2>Stress Relief Tools</h2>
-      <p>Guided meditations, music, and mindfulness resources for emotional balance.</p>
-      <button onclick="openTools()">Explore Tools</button>
-    </div>
-  </div>
-
-  <script src="community-support.js"></script>
 </body>
 </html>

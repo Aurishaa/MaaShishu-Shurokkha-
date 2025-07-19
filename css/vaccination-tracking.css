@@ -1,85 +1,81 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #F8F4FF;
-  margin: 0;
+/* === File: css/vaccination.css (The Final, Corrected Version) === */
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.page-controls .child-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--white-color);
+    padding: 8px 15px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+}
+.page-controls .child-selector label {
+    font-weight: 600;
+    color: var(--dark-text);
+    margin: 0;
+}
+.page-controls .child-selector i {
+    color: var(--primary-blue);
+}
+.page-controls .child-selector select {
+    border: none;
+    background: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 5px;
+}
+.page-controls .child-selector select:focus {
+    outline: none;
 }
 
-.tracker-header {
-  background-color: #A6D6D6;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+/* --- This is the new, corrected table style --- */
+.data-table {
+    width: 100%;
+    border-collapse: separate; /* This is the key change */
+    border-spacing: 0 10px; /* Adds vertical space between rows */
+    font-size: 0.95rem;
 }
+.data-table thead {
+    /* Hide the default table header */
+    display: none;
+}
+.data-table tbody tr {
+    /* Each row is now a card */
+    background-color: var(--white-color);
+    box-shadow: var(--shadow-soft);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+.data-table tbody tr:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+.data-table td {
+    padding: 16px;
+    border: none; /* Remove all default borders */
+    vertical-align: middle; /* Center content vertically */
+}
+/* Style the first and last cells to have rounded corners */
+.data-table td:first-child { border-radius: 8px 0 0 8px; }
+.data-table td:last-child { border-radius: 0 8px 8px 0; }
 
-.tracker-header h1 {
-  color: #3E8E7E;
-  font-size: 1.8rem;
+/* Status Badges for the table */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
 }
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  padding: 0;
-  margin: 0;
-}
-
-nav a {
-  text-decoration: none;
-  color: #3E8E7E;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-nav a:hover {
-  color: #2C4F4F;
-}
-
-.tracker-main {
-  padding: 40px 20px;
-}
-
-.tracker-main h2 {
-  color: #3E8E7E;
-  margin-bottom: 30px;
-}
-
-.vaccine-table {
-  width: 100%;
-  max-width: 800px;
-  margin: auto;
-  border-collapse: collapse;
-  background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
-
-.vaccine-table th,
-.vaccine-table td {
-  padding: 15px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-.vaccine-table th {
-  background-color: #A6D6D6;
-  color: #3E8E7E;
-}
-
-.status-due {
-  color: #E67E22;
-  font-weight: bold;
-}
-
-.status-complete {
-  color: #27AE60;
-  font-weight: bold;
-}
-
-.status-missed {
-  color: #E74C3C;
-  font-weight: bold;
-}
+.status-completed { background-color: rgba(42, 157, 143, 0.1); color: #1e7d72; }
+.status-due { background-color: rgba(231, 111, 81, 0.1); color: #c95d41; }
+.status-upcoming { background-color: rgba(233, 196, 106, 0.15); color: #b48c34; }

@@ -1,4 +1,4 @@
-<!-- === File: views/doctor-dashboard/doctor-dashboard.html (The Secure Version) === -->
+<!-- === File: views/doctor-dashboard/doctor-dashboard.html (FINAL, FULLY LINKED) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,43 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Portal - MaaShishu Shurokkha</title>
     <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/mother-dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
     <div class="dashboard-layout">
         <aside class="sidebar">
-            <div class="sidebar-header"><a href="#"><img src="../../logo.png" alt="Logo"><h3>Provider Portal</h3></a></div>
+            <div class="sidebar-header"><a href="#"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha </h3></a></div>
             <nav class="sidebar-nav">
-                <p class="nav-section-title">Provider Tools</p>
                 <ul>
-                    <li class="active"><a href="#"><i class="fa-solid fa-notes-medical fa-fw"></i> Patient Dashboard</a></li>
-                    <li><a href="#"><i class="fa-solid fa-users fa-fw"></i> My Patients</a></li>
-                    <li><a href="#"><i class="fa-solid fa-calendar-days fa-fw"></i> My Schedule</a></li>
-                </ul>
+                    <li class="active"><a href="#"><i class="fa-solid fa-notes-medical fa-fw"></i> Dashboard</a></li>
+                    <li><a href="../my-patients.html"><i class="fa-solid fa-users fa-fw"></i> My Patients</a></li>
+                    <li><a href="../my-schedule.html"><i class="fa-solid fa-calendar-days fa-fw"></i> My Schedule</a></li>
+                    <li><a href="../lab-results.html"><i class="fa-solid fa-vial-virus fa-fw"></i> Lab Results</a></li>
+<!-- Replace with this new, more robust line -->
+<li class="logout-link"><a id="logoutButton" href="../login/login.html"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>                </ul>
             </nav>
             <div class="profile-switcher">
-                <!-- The Doctor's profile is shown here, with a logout option -->
                 <div class="profile-item">
-                    <div class="avatar avatar-doctor">DR</div>
+                    <div class="avatar" style="background-color: #6c757d; color: white;">DR</div>
                     <span>Dr. [Doctor's Name]</span>
                 </div>
-                <a href="#" id="logoutButton" class="profile-item" style="margin-top: 0.5rem;">
-                    <i class="fa-solid fa-right-from-bracket fa-fw"></i>
-                    <span>Logout</span>
-                </a>
             </div>
         </aside>
         <main class="main-content">
-            <header class="main-content-header"><h1>Welcome, Dr. [Doctor's Name]</h1><p>Here is a summary of your patient activity.</p></header>
+            <header class="main-content-header">
+                <h1>Welcome, Dr. [Doctor's Name]</h1>
+                <p>Here is a summary of your patient activity and schedule for today.</p>
+            </header>
             <div class="dashboard-grid">
                 <div class="dashboard-card content-card">
-                    <div class="card-header"><div class="icon icon-blue"><i class="fa-solid fa-calendar-day"></i></div><h3>Today's Appointments</h3></div>
-                    <div class="card-body"><p>You have <strong>8 appointments</strong> scheduled for today. Your next is in 15 minutes.</p><a href="#" class="btn btn-primary">View Schedule</a></div>
+                    <div class="card-header"><div class="icon"><i class="fa-solid fa-calendar-day"></i></div><h3>Today's Appointments</h3></div>
+                    <div class="card-body">
+                        <p>You have <strong>8 appointments</strong> scheduled for today. Your next is in 15 minutes.</p>
+                        <a href="../my-schedule/my-schedule.html" class="btn btn-primary">View Schedule</a>
+                    </div>
                 </div>
                 <div class="dashboard-card content-card">
-                    <div class="card-header"><div class="icon icon-blue"><i class="fa-solid fa-inbox"></i></div><h3>Pending Messages</h3></div>
-                    <div class="card-body"><p>You have <strong>3 unread messages</strong> from patients waiting for a response.</p><a href="#" class="btn btn-primary">Go to Inbox</a></div>
+                    <div class="card-header">
+                        <div class="icon" style="background-color: rgba(42, 157, 143, 0.1); color: #1e7d72;"><i class="fa-solid fa-vial-virus"></i></div>
+                        <h3>New Lab Results</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>You have <strong>5 new lab results</strong> to review for your patients today.</p>
+                        <a href="../lab-results/lab-results.html" class="btn btn-primary">Review Results</a>
+                    </div>
                 </div>
             </div>
         </main>

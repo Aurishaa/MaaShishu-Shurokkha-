@@ -1,61 +1,95 @@
-<!-- === File: views/appointment-scheduling/child-appointment.html (FINAL, WITH BOOKING BUTTONS) === -->
+<!-- === File: views/appointment-scheduling/child-appointment.html (FINAL, Sidebar Fixed) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Child's Appointments</title>
+    <title>Child's Appointments - MaaShishu Shurokkha</title>
+    <!-- These links are correct and will now work with the fixed HTML -->
     <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/mother-dashboard.css">
+    <link rel="stylesheet" href="../../css/appointment-scheduling.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
-<body>
+<body class="child-dashboard-page">
     <div class="dashboard-layout">
         <aside class="sidebar">
-            <div class="sidebar-header"><a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a></div>
+            <!-- This is the complete, correct sidebar structure -->
+            <div class="sidebar-header">
+                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+            </div>
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="../child-dashboard/child-dashboard.html"><i class="fa-solid fa-chart-line fa-fw"></i> Child's Dashboard</a></li>
-                    <li><a href="../vaccination-tracking/child-vaccination.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+                    <li><a href="../vaccination-tracking/child-vaccination.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Schedule</a></li>
                     <li class="active"><a href="#"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
                 </ul>
             </nav>
             <div class="profile-switcher">
-                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>Back to My Dashboard</span></a>
-                <a href="../child-dashboard/child-dashboard.html" class="profile-item"><div class="avatar avatar-child">CN</div><span>[Child's Name]'s Profile</span></a>
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-mother">MN</div>
+                    <span>Back to My Dashboard</span>
+                </a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-child">CN</div>
+                    <span>[Child's Name]'s Profile</span>
+                </a>
             </div>
         </aside>
         <main class="main-content">
-            <header class="page-header"><h1>Appointments for [Child's Name]</h1><p>View upcoming appointments and book consultations for your child.</p></header>
+            <header class="page-header">
+                <h1>Appointments for [Child's Name]</h1>
+                <p>View upcoming appointments and book consultations for your child.</p>
+            </header>
             
             <section class="content-card">
                 <h3 class="section-header">Upcoming Appointments</h3>
                 <div class="appointment-list-item">
                     <div class="doctor-avatar-initials avatar-ped">AK</div>
-                    <div class="doctor-info"><h3>Dr. Ahmed Karim</h3><p>MBBS, DCH (Pediatrics)</p></div>
-                    <div class="appointment-details"><p>September 05, 2025 at 02:00 PM</p><div class="form-actions"><button class="btn">Cancel</button><button class="btn btn-primary">Reschedule</button></div></div>
+                    <div class="doctor-info">
+                        <h3>Dr. Ahmed Karim</h3>
+                        <p>MBBS, DCH (Pediatrics)</p>
+                    </div>
+                    <div class="appointment-details">
+                        <p>September 05, 2025 at 02:00 PM</p>
+                        <div class="form-actions">
+                            <button class="btn btn-secondary">Cancel</button>
+                            <button class="btn btn-primary">Reschedule</button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <section style="margin-top: 2rem;">
                 <h3 class="section-header">Book a New Consultation with a Pediatrician</h3>
-                <div class="provider-list">
-                    <!-- Doctor Profile 1 -->
-                    <div class="doctor-profile-card content-card">
-                        <div class="doctor-avatar-initials avatar-ped">MR</div>
-                        <div class="doctor-details"><h3>Prof. Dr. Mizanur Rahman</h3><p class="qualifications">MBBS, FCPS (Paediatrics)</p><p>30 Years of Experience</p><span class="specialty specialty-ped">Pediatrician</span></div>
-                        <div class="hospital-info"><p><i class="fa-solid fa-hospital"></i> Bangladesh Specialized Hospital</p><p class="address">Mirpur Road, Shyamoli</p><p class="availability"><i class="fa-solid fa-clock"></i> Sat, Mon, Wed (6 PM - 9 PM)</p></div>
+                <div class="provider-list-grid">
+                    <div class="doctor-profile-block content-card">
+                        <div class="doctor-profile-block-header">
+                            <div class="doctor-avatar-large avatar-ped">MR</div>
+                            <div class="doctor-details">
+                                <h3>Prof. Dr. Mizanur Rahman</h3>
+                                <p class="qualifications">MBBS, FCPS (Paediatrics)</p>
+                            </div>
+                        </div>
+                        <div class="hospital-info">
+                            <p><i class="fa-solid fa-hospital"></i> Bangladesh Specialized Hospital</p>
+                            <p class="availability"><i class="fa-solid fa-clock"></i> Sat, Mon, Wed (6 PM - 9 PM)</p>
+                        </div>
                         <div class="booking-section">
-                            <!-- THE MISSING BOOKING BUTTON -->
                             <button class="btn btn-primary">Book Appointment</button>
                         </div>
                     </div>
-                    <!-- Doctor Profile 2 -->
-                    <div class="doctor-profile-card content-card">
-                        <div class="doctor-avatar-initials avatar-ped">SA</div>
-                        <div class="doctor-details"><h3>Dr. Salma Akhtar</h3><p class="qualifications">MBBS, MD (Paediatrics)</p><p>12 Years of Experience</p><span class="specialty specialty-ped">Pediatrician</span></div>
-                        <div class="hospital-info"><p><i class="fa-solid fa-hospital"></i> Square Hospitals Ltd.</p><p class="address">Panthapath, Dhaka</p><p class="availability"><i class="fa-solid fa-clock"></i> Sun, Tue, Thu (4 PM - 7 PM)</p></div>
+                    <div class="doctor-profile-block content-card">
+                        <div class="doctor-profile-block-header">
+                            <div class="doctor-avatar-large avatar-ped">SA</div>
+                            <div class="doctor-details">
+                                <h3>Dr. Salma Akhtar</h3>
+                                <p class="qualifications">MBBS, MD (Paediatrics)</p>
+                            </div>
+                        </div>
+                        <div class="hospital-info">
+                            <p><i class="fa-solid fa-hospital"></i> Square Hospitals Ltd.</p>
+                            <p class="availability"><i class="fa-solid fa-clock"></i> Sun, Tue, Thu (4 PM - 7 PM)</p>
+                        </div>
                         <div class="booking-section">
-                            <!-- THE MISSING BOOKING BUTTON -->
                             <button class="btn btn-primary">Book Appointment</button>
                         </div>
                     </div>

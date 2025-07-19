@@ -1,98 +1,75 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #F8F4FF;
-  margin: 0;
-}
+/* === File: css/dashboard.css (The Final, Unified, and Stable Version) === */
 
-.header {
-  background-color: #A6D6D6;
-  padding: 20px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+/* --- 1. CORE DASHBOARD LAYOUT (Fixes the horizontal sidebar) --- */
+.dashboard-layout { display: flex; min-height: 100vh; }
+.sidebar {
+    width: 280px; background-color: var(--white-color); border-right: 1px solid var(--border-color);
+    display: flex; flex-direction: column; padding: 1.5rem; flex-shrink: 0;
 }
+.main-content { flex-grow: 1; padding: 2rem 4rem; background-color: #f8f9fc; }
+/* Adds the pink background for child-specific pages */
+body.child-dashboard-page .main-content { background-color: #FFF0F5; }
 
-.header h1 {
-  color: #3E8E7E;
-  font-size: 1.8rem;
+/* --- 2. SIDEBAR CONTENT STYLES --- */
+.sidebar-header {
+    display: flex; align-items: center; gap: 10px; padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
+.sidebar-header a { color: var(--dark-text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.sidebar-header img { height: 40px; }
+.sidebar-header h3 { margin: 0; font-size: 1.1rem; }
+.sidebar-nav { margin-top: 1.5rem; flex-grow: 1; }
+.sidebar-nav ul { list-style: none; }
+.sidebar-nav li a {
+    display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 8px;
+    color: var(--secondary-text); font-weight: 500; transition: all 0.2s ease; margin-bottom: 0.5rem; text-decoration: none;
+}
+.sidebar-nav li a:hover { background-color: #f0f4f8; color: var(--dark-text); }
+.sidebar-nav li.active a { background-color: var(--primary-blue); color: var(--white-color); box-shadow: var(--shadow-soft); }
+.profile-switcher { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid var(--border-color); }
+.profile-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s ease; text-decoration: none; color: var(--dark-text); }
+.profile-item:hover { background-color: #f0f4f8; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; }
+.avatar-mother { background-color: var(--primary-blue); color: var(--white-color); }
+.avatar-child { background-color: var(--soft-pink); color: #c55a71; }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  padding: 0;
-  margin: 0;
+/* --- 3. MAIN CONTENT COMPONENT STYLES --- */
+.page-header { margin-bottom: 2rem; }
+.page-header h1 { font-size: 2.2rem; }
+.page-header p { color: var(--secondary-text); margin-top: 0.5rem; }
+.section-header { font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+.appointment-list-item { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+.doctor-avatar-initials {
+    width: 70px; height: 70px; border-radius: 12px; display: flex; align-items: center;
+    justify-content: center; font-size: 2rem; font-weight: 600; flex-shrink: 0;
 }
-
-nav a {
-  text-decoration: none;
-  color: #3E8E7E;
-  font-weight: bold;
-  transition: color 0.3s;
+.avatar-gyn { background-color: var(--soft-pink); color: #c55a71; }
+.avatar-ped { background-color: rgba(58, 134, 255, 0.1); color: var(--primary-blue); }
+.doctor-info h3 { margin: 0; }
+.doctor-info p { margin: 0.25rem 0 0 0; color: var(--secondary-text); }
+.appointment-details { text-align: right; margin-left: auto; }
+.appointment-details p { margin: 0 0 0.5rem 0; font-weight: 600; font-size: 1.1rem; }
+.appointment-details .form-actions { margin-top: 0.5rem; display: flex; gap: 0.5rem; }
+.btn-secondary { background-color: #f0f4f8; color: var(--secondary-text); box-shadow: none; }
+.btn-secondary:hover { background-color: #e5e9ed; color: var(--dark-text); }
+.provider-list-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 1.5rem; }
+.doctor-profile-block { display: flex; flex-direction: column; padding: 1.5rem; transition: all 0.2s ease; }
+.doctor-profile-block:hover { transform: translateY(-3px); box-shadow: var(--shadow-medium); }
+.doctor-profile-block-header { display: flex; align-items: center; gap: 1.5rem; }
+.doctor-avatar-large {
+    width: 80px; height: 80px; border-radius: 12px; display: flex; align-items: center;
+    justify-content: center; font-size: 2.5rem; font-weight: 600; flex-shrink: 0;
 }
-
-nav a:hover {
-  color: #2C4F4F;
+.doctor-details h3 { margin: 0; }
+.doctor-details .qualifications { color: var(--secondary-text); font-size: 0.9rem; margin: 0.25rem 0; }
+.doctor-details .specialty {
+    display: inline-block; padding: 4px 10px; border-radius: 6px;
+    font-size: 0.8rem; font-weight: 600; margin-top: 0.5rem;
 }
-
-.appointment-main {
-  padding: 40px 20px;
-  max-width: 700px;
-  margin: auto;
-}
-
-.booking-section, .appointment-list {
-  background-color: #FFFFFF;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  margin-bottom: 30px;
-}
-
-.booking-section h2, .appointment-list h2 {
-  color: #3E8E7E;
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin: 10px 0 5px;
-  color: #3E8E7E;
-}
-
-input, select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-button {
-  background-color: #FCD5CE;
-  color: #3E8E7E;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #FFB5A7;
-}
-
-#appointmentList {
-  list-style: none;
-  padding-left: 0;
-}
-
-#appointmentList li {
-  background-color: #F0F0FA;
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-}
+.specialty-gyn { background-color: rgba(255, 179, 193, 0.2); color: #c55a71; }
+.specialty-ped { background-color: rgba(58, 134, 255, 0.1); color: var(--primary-blue); }
+.hospital-info { padding-top: 1rem; margin-top: 1rem; border-top: 1px solid var(--border-color); }
+.hospital-info p { margin: 0.25rem 0; font-weight: 500; font-size: 0.9rem; }
+.hospital-info p i { color: var(--secondary-text); margin-right: 8px; width: 16px; text-align: center; }
+.availability { font-weight: 600; color: #1e7d72; }
+.booking-section { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; }

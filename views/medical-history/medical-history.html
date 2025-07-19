@@ -1,0 +1,112 @@
+<!-- === File: views/medical-history/child-medical-history.html (FINAL, TIMELINE VERSION) === -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Child's Medical History - MaaShishu Shurokkha</title>
+    <link rel="stylesheet" href="../../css/main.css"/>
+    <link rel="stylesheet" href="../../css/child-dashboard.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+</head>
+<body class="child-dashboard-page">
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="../mother-dashboard/mother-dashboard.html">
+                    <img src="../../logo.png" alt="Logo"/>
+                    <h3>MaaShishu Shurokkha</h3>
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <p class="nav-section-title enhanced-title">👶 Child's Health</p>
+                <ul>
+                    <li><a href="../child-dashboard/child-dashboard.html"><i class="fa-solid fa-chart-line fa-fw"></i> Dashboard</a></li>
+                    <li><a href="../vaccination-tracking/child-vaccination.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Schedule</a></li>
+                    <li><a href="../appointment-scheduling/child-appointment.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+                    <li class="active"><a href="#"><i class="fa-solid fa-file-medical fa-fw"></i> Medical History</a></li>
+                    <li><a href="#"><i class="fa-solid fa-hospital-user fa-fw"></i> Nearby Providers</a></li>
+                </ul>
+            </nav>
+            <div class="profile-switcher">
+                <p class="nav-section-title">Switch View</p>
+                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
+                    <div class="avatar avatar-mother">MN</div>
+                    <span>Mother Dashboard</span>
+                </a>
+                <a href="../child-dashboard/child-dashboard.html" class="profile-item active">
+                    <div class="avatar avatar-child">CN</div>
+                    <span>Child Dashboard</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+           <!-- Replace with this new, correct header -->
+<div class="page-header-actions">
+    <div class="header-text-content">
+        <h1>Medical History for [Child's Name]</h1>
+        <p>A complete timeline of your child's health records.</p>
+    </div>
+    <div class="header-button-container">
+        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add New Record</button>
+    </div>
+</div>
+            <div class="history-timeline">
+                <!-- Example of a timeline item -->
+                <div class="timeline-item">
+                    <div class="timeline-icon icon-checkup">
+                        <i class="fa-solid fa-stethoscope"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Routine Checkup</h3>
+                            <span class="date">September 05, 2025</span>
+                        </div>
+                        <div class="timeline-body">
+                            <p>with <span class="doctor-name">Dr. Ahmed Karim</span></p>
+                            <p><strong>Diagnosis:</strong> Healthy, meeting all growth milestones.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example of a second timeline item -->
+                <div class="timeline-item">
+                    <div class="timeline-icon icon-prescription">
+                        <i class="fa-solid fa-pills"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Prescription Issued</h3>
+                            <span class="date">July 22, 2025</span>
+                        </div>
+                        <div class="timeline-body">
+                            <p>with <span class="doctor-name">Dr. Salma Akhtar</span></p>
+                            <p><strong>Details:</strong> Prescribed Amoxicillin for ear infection.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Example of a third timeline item -->
+                <div class="timeline-item">
+                    <div class="timeline-icon icon-report">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <h3>Lab Report Added</h3>
+                            <span class="date">June 10, 2025</span>
+                        </div>
+                        <div class="timeline-body">
+                             <p>Blood Test</p>
+                             <p><strong>Result:</strong> All results within normal range.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
