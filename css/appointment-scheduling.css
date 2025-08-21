@@ -73,3 +73,65 @@ body.child-dashboard-page .main-content { background-color: #FFF0F5; }
 .hospital-info p i { color: var(--secondary-text); margin-right: 8px; width: 16px; text-align: center; }
 .availability { font-weight: 600; color: #1e7d72; }
 .booking-section { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; }
+
+/* Appointment Booking Modal */
+.modal {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+}
+.modal.hidden { display: none; }
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: min(450px, 90%);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.muted { display:block; margin-top:6px; font-size: 0.9rem; color: #6b7280; }
+.form-row.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dde1e7;
+  border-radius: 8px;
+  background: #fff;
+}
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

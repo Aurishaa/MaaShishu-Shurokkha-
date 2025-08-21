@@ -1,71 +1,182 @@
-<!-- === File: views/appointment-scheduling/appointment-scheduling.html (FINAL, WITH BOOKING BUTTONS) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>My Appointments</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/mother-dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>My Appointments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/mother-dashboard.css" />
+  <link rel="stylesheet" href="../../css/appointment-scheduling.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <style>
+    /* Minimal polish (safe if your CSS file already covers some of this) */
+    .form-row.two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    select, textarea, input[type="text"] {
+      width:100%; padding:10px; border:1px solid #dde1e7; border-radius:8px; background:#fff;
+    }
+    select:disabled { opacity:.6; cursor:not-allowed; }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed; }
+    .muted { color:#6b7280; }
+    .modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.5); z-index:1000; }
+    .modal.hidden { display:none; }
+    .modal-content { background:#fff; padding:20px; border-radius:12px; width:min(520px, 92%); box-shadow:0 10px 30px rgba(0,0,0,.2); }
+    .form-group{ margin-bottom:14px; }
+    .form-group label{ display:block; font-weight:600; margin-bottom:6px; }
+    .actions { display:flex; gap:10px; justify-content:flex-end; margin-top:6px; }
+
+    /* Appointment cards */
+    .appointment-card {
+      border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; margin-bottom: 14px; background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    }
+    .appointment-card h4 { margin: 0 0 6px; font-size: 1.1rem; }
+    .appointment-card p { margin: 4px 0; }
+
+    .status-badge {
+      display: inline-block; padding: 3px 8px; font-size: 0.75rem; font-weight: 600; border-radius: 20px; text-transform: capitalize;
+    }
+    .status-badge.scheduled { background: #e0f7ec; color: #047857; }
+    .status-badge.rescheduled { background: #fef3c7; color: #92400e; }
+  </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-header"><a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a></div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
-                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
-                    <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
-                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
-                    <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
-                    <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
-                </ul>
-            </nav>
-            <div class="profile-switcher">
-                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>My Profile</span></a>
-                <a href="../child-dashboard/child-dashboard.html" class="profile-item"><div class="avatar avatar-child">CN</div><span>Child's Dashboard</span></a>
-            </div>
-        </aside>
-        <main class="main-content">
-            <header class="page-header"><h1>My Appointments</h1><p>View your upcoming appointments and book new consultations.</p></header>
-            
-            <section class="content-card">
-                <h3 class="section-header">Upcoming Appointments</h3>
-                <div class="appointment-list-item">
-                    <div class="doctor-avatar-initials avatar-gyn">AR</div>
-                    <div class="doctor-info"><h3>Dr. Anika Rahman</h3><p>MBBS, FCPS (Gynae)</p></div>
-                    <div class="appointment-details"><p>August 15, 2025 at 10:30 AM</p><div class="form-actions"><button class="btn">Cancel</button><button class="btn btn-primary">Reschedule</button></div></div>
-                </div>
-            </section>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../mother-dashboard/mother-dashboard.html">
+          <img src="../../logo.png" alt="Logo" />
+          <h3>MaaShishu Shurokkha</h3>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+          <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
+          <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+          <li class="active"><a href="#"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+          <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
+          <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
+          <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+        </ul>
+      </nav>
+      <div class="profile-switcher">
+        <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
+          <div class="avatar avatar-mother">MN</div><span>My Profile</span>
+        </a>
+        <a href="../child-dashboard/child-dashboard.html" class="profile-item">
+          <div class="avatar avatar-child">CN</div><span>Child's Dashboard</span>
+        </a>
+      </div>
+    </aside>
 
-            <section style="margin-top: 2rem;">
-                <h3 class="section-header">Book a New Consultation with a Gynecologist</h3>
-                <div class="provider-list">
-                    <!-- Doctor Profile 1 -->
-                    <div class="doctor-profile-card content-card">
-                        <div class="doctor-avatar-initials avatar-gyn">SC</div>
-                        <div class="doctor-details"><h3>Prof. Dr. Sameena Chowdhury</h3><p class="qualifications">MBBS, FCPS (Gynae), MS (Gynae)</p><p>25 Years of Experience</p><span class="specialty specialty-gyn">Gynecologist</span></div>
-                        <div class="hospital-info"><p><i class="fa-solid fa-hospital"></i> Evercare Hospital Dhaka</p><p class="address">Plot 81, Block E, Bashundhara R/A</p><p class="availability"><i class="fa-solid fa-clock"></i> Mon, Wed (7 PM - 9 PM)</p></div>
-                        <div class="booking-section">
-                            <!-- THE MISSING BOOKING BUTTON -->
-                            <button class="btn btn-primary">Book Appointment</button>
-                        </div>
-                    </div>
-                    <!-- Doctor Profile 2 -->
-                    <div class="doctor-profile-card content-card">
-                        <div class="doctor-avatar-initials avatar-gyn">NM</div>
-                        <div class="doctor-details"><h3>Dr. Nusrat Mahmud</h3><p class="qualifications">MBBS, DGO, FCPS (Gynae)</p><p>15 Years of Experience</p><span class="specialty specialty-gyn">Gynecologist</span></div>
-                        <div class="hospital-info"><p><i class="fa-solid fa-hospital"></i> Labaid Specialized Hospital</p><p class="address">House 1, Road 4, Dhanmondi</p><p class="availability"><i class="fa-solid fa-clock"></i> Tue, Thu (5 PM - 8 PM)</p></div>
-                        <div class="booking-section">
-                            <!-- THE MISSING BOOKING BUTTON -->
-                            <button class="btn btn-primary">Book Appointment</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
+    <!-- Main content -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1>My Appointments</h1>
+        <p>View your upcoming appointments and book new consultations.</p>
+      </header>
+
+      <!-- Upcoming Appointments -->
+      <section class="content-card">
+        <h3 class="section-header">Upcoming Appointments</h3>
+        <div id="appointmentsList" class="appointment-list"></div>
+      </section>
+
+      <!-- Book New Consultation -->
+      <section style="margin-top: 2rem;">
+        <h3 class="section-header">Book a New Consultation with a Gynecologist</h3>
+        <div class="provider-list">
+          <!-- Doctor Profile 1 -->
+          <div class="doctor-profile-card content-card">
+            <div class="doctor-avatar-initials avatar-gyn">SC</div>
+            <div class="doctor-details">
+              <h3>Prof. Dr. Sameena Chowdhury</h3>
+              <p class="qualifications">MBBS, FCPS (Gynae), MS (Gynae)</p>
+              <p>25 Years of Experience</p>
+              <span class="specialty specialty-gyn">Gynecologist</span>
+            </div>
+            <div class="hospital-info">
+              <p><i class="fa-solid fa-hospital"></i> Evercare Hospital Dhaka</p>
+              <p class="address">Plot 81, Block E, Bashundhara R/A</p>
+              <p class="availability"><i class="fa-solid fa-clock"></i> Mon, Wed (7 PM - 9 PM)</p>
+            </div>
+            <div class="booking-section">
+              <button class="btn btn-primary book-appointment">Book Appointment</button>
+            </div>
+          </div>
+
+          <!-- Doctor Profile 2 -->
+          <div class="doctor-profile-card content-card">
+            <div class="doctor-avatar-initials avatar-gyn">NM</div>
+            <div class="doctor-details">
+              <h3>Dr. Nusrat Mahmud</h3>
+              <p class="qualifications">MBBS, DGO, FCPS (Gynae)</p>
+              <p>15 Years of Experience</p>
+              <span class="specialty specialty-gyn">Gynecologist</span>
+            </div>
+            <div class="hospital-info">
+              <p><i class="fa-solid fa-hospital"></i> Labaid Specialized Hospital</p>
+              <p class="address">House 1, Road 4, Dhanmondi</p>
+              <p class="availability"><i class="fa-solid fa-clock"></i> Tue, Thu (5 PM - 8 PM)</p>
+            </div>
+            <div class="booking-section">
+              <button class="btn btn-primary book-appointment">Book Appointment</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appointment Modal (used for Book + Reschedule) -->
+      <div id="bookingModal" class="modal hidden">
+        <div class="modal-content">
+          <h3 id="modalTitle">Book Appointment</h3>
+          <form id="bookingForm">
+            <input type="hidden" id="editingId" />
+
+            <div class="form-group">
+              <label>Doctor</label>
+              <input type="text" id="doctorName" readonly />
+            </div>
+
+            <div class="form-group">
+              <label>Hospital</label>
+              <input type="text" id="hospital" readonly />
+            </div>
+
+            <!-- Professional Date & Time pickers -->
+            <div class="form-row two-col">
+              <div class="form-group">
+                <label for="slotDate">Date</label>
+                <select id="slotDate" required>
+                  <option value="" disabled selected>Select a date</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="slotTime">Time</label>
+                <select id="slotTime" required disabled>
+                  <option value="" disabled selected>Select a time</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reason">Reason for Visit</label>
+              <textarea id="reason" placeholder="e.g. Prenatal check-up, vaccination, consultation" required></textarea>
+            </div>
+
+            <div class="actions">
+              <button type="button" id="closeModal" class="btn">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="confirmBtn" disabled>Confirm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Static booking logic (no Firebase) -->
+  <script src="../../js/appointment-booking.js"></script>
 </body>
 </html>
