@@ -1,78 +1,97 @@
-// === File: js/register.js (All-in-One Version) ===
+// register.js — Hybrid: Provider uses local auth; Mother/Doctor use Firebase
+// Load order on register.html:
+// 1) firebase-app.js, firebase-auth.js, firebase-firestore.js
+// 2) ../../js/firebase-config.js              (for mother/doctor)
+// 3) ../../js/auth.js                         (your local provider auth exposing window.PROVIDER_AUTH)
+// 4) ../../js/register.js                     (this file)
 
-try {
-    // --- PART 1: FIREBASE CONFIGURATION ---
-    // This part runs immediately when the script is loaded.
-    const firebaseConfig = {
-      apiKey: "AIzaSyDBEwAiW648VpDIMAUqi_PWoYO0UJM8Lwc", // <-- Put your new, safe key here
-      authDomain: "maashishu-shurokkha.firebaseapp.com",
-      projectId: "maashishu-shurokkha",
-      storageBucket: "maashishu-shurokkha.appspot.com",
-      messagingSenderId: "1020945509053",
-      appId: "1:1020945509053:web:6bb48ef986cd2752fd25d4"
-    };
+(function () {
+  // Firebase objects (only used for mother/doctor)
+  const auth = firebase.auth();
+  const db   = firebase.firestore();
 
-    // Initialize Firebase and make auth and db available
-    const app = firebase.initializeApp(firebaseConfig);
-    var auth = firebase.auth();
-    var db = firebase.firestore();
-    console.log("Firebase config loaded and initialized successfully inside register.js.");
+  // === Match your actual HTML IDs ===
+  const form      = document.getElementById("registerForm") || document.querySelector("form");
+  const errEl     = document.getElementById("err");
+  const roleSel   = () => document.querySelector('input[name="role"]:checked')?.value;
+  // You don’t have #clinicRow / #clinic in this form; keep variables defensively:
+  const clinicRow = document.getElementById("clinicRow");
+  const clinicInp = document.getElementById("clinic");
 
-} catch (e) {
-    console.error("FATAL ERROR during Firebase Initialization:", e);
-    alert("CRITICAL ERROR: Firebase could not be configured. Check console.");
-}
-
-
-// --- PART 2: EVENT LISTENER LOGIC ---
-// This part waits for the HTML page to be ready.
-document.addEventListener('DOMContentLoaded', function() {
-    const registerForm = document.getElementById('registerForm');
-
-    if (!registerForm) {
-        console.error("FATAL ERROR: The form with id='registerForm' was NOT found.");
-        return;
+  // If you later add a clinic field for providers, this will auto-toggle it.
+  document.addEventListener("change", (e) => {
+    if (e.target?.name === "role" && clinicRow) {
+      clinicRow.style.display = (roleSel() === "provider") ? "block" : "none";
     }
-    
-    registerForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        console.log("Submit button clicked. Starting validation...");
+  });
 
-        // Check if Firebase services are actually available
-        if (typeof auth === 'undefined' || typeof db === 'undefined') {
-            console.error("FATAL ERROR: 'auth' or 'db' objects are not defined. Firebase initialization failed.");
-            alert("CRITICAL ERROR: Firebase services are not available.");
-            return;
+  function setErr(msg) {
+    if (errEl) errEl.textContent = msg || "";
+    else if (msg) alert(msg);
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setErr("");
+
+    // === Match your actual field IDs ===
+    const name     = document.getElementById("fullName")?.value.trim();
+    const email    = document.getElementById("email")?.value.trim();
+    const password = document.getElementById("password")?.value;
+    const role     = (roleSel() || "mother").toLowerCase();
+    const clinic   = clinicInp?.value.trim() || ""; // safe even if not present
+
+    if (!name)  return setErr("Please enter your full name.");
+    if (!email) return setErr("Please enter a valid email.");
+    if (!password || password.length < 6) return setErr("Password must be at least 6 characters.");
+      if (role === "provider" && !clinic) {
+    return setErr("Please select your clinic/hospital.");
+  }
+
+    try {
+      console.log("[register] role selected:", role);
+
+      if (role === "provider") {
+        // ---------- LOCAL (no Firebase) ----------
+        if (!window.PROVIDER_AUTH) {
+          return setErr("Provider auth not loaded. Include ../../js/auth.js BEFORE register.js");
         }
+        await PROVIDER_AUTH.register({
+          name,
+          email,
+          password,
+          clinicName: clinic || "Clinic"
+        });
+        // Go to provider portal
+window.location.href = "../login/login.html?role=provider&signup_success=1";
+        return;
+      }
 
-        // Get values from the form
-        const fullName = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const role = document.querySelector('input[name="role"]:checked').value;
+      // ---------- FIREBASE (mother/doctor) ----------
+      const cred = await auth.createUserWithEmailAndPassword(email, password);
+      const uid  = cred.user.uid;
 
-        console.log("Data to be sent:", { fullName, email, role });
+      // Optional nicety
+      if (cred.user.updateProfile) {
+        try { await cred.user.updateProfile({ displayName: name }); } catch {}
+      }
 
-        // --- Firebase Interaction ---
-        console.log("Attempting to contact Firebase Auth...");
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log("%cSUCCESS: Firebase Auth created the user.", "color: green");
-                return db.collection('users').doc(user.uid).set({
-                    fullName: fullName,
-                    email: email,
-                    role: role
-                });
-            })
-            .then(() => {
-                console.log("%cSUCCESS: Firestore saved the user data.", "color: green");
-                alert("Registration successful! Redirecting to login.");
-                window.location.href = '../login/login.html';
-            })
-            .catch((error) => {
-                console.error("%cFIREBASE ERROR:", "color: red; font-weight: bold;", error.message);
-                alert("Registration Failed: " + error.message);
-            });
-    });
-});
+      await db.collection("users").doc(uid).set({
+        name,
+        email,
+        role,                    // "mother" or "doctor"
+        clinicName: "",          // providers are kept local in this hybrid setup
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      if (role === "doctor") {
+        window.location.href = "../doctor-dashboard/doctor-dashboard.html";
+      } else {
+        window.location.href = "../mother-dashboard/mother-dashboard.html";
+      }
+    } catch (ex) {
+      console.error("[register] error:", ex);
+      setErr(ex?.message || "Registration failed.");
+    }
+  });
+})();

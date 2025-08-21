@@ -1,77 +1,56 @@
-// === File: js/login.js (All-in-One Version) ===
+// login.js — Hybrid login: Provider uses local auth, Mother/Doctor use Firebase
+(function () {
+  const auth = firebase.auth();
 
-try {
-    // --- PART 1: FIREBASE CONFIGURATION ---
-    const firebaseConfig = {
-      apiKey: "AIzaSyDBEwAiW648VpDIMAUqi_PWoYO0UJM8Lwc", // <-- Put your new, safe key here
-      authDomain: "maashishu-shurokkha.firebaseapp.com",
-      projectId: "maashishu-shurokkha",
-      storageBucket: "maashishu-shurokkha.appspot.com",
-      messagingSenderId: "1020945509053",
-      appId: "1:1020945509053:web:6bb48ef986cd2752fd25d4"
-    };
-   const app = firebase.initializeApp(firebaseConfig);
-    var auth = firebase.auth();
-    var db = firebase.firestore();
-    console.log("Firebase initialized successfully inside login.js.");
+  const form  = document.getElementById("loginForm") || document.querySelector("form");
+  const errEl = document.getElementById("err");
+  const roleSel = () => document.querySelector('input[name="role"]:checked')?.value;
 
-} catch (e) {
-    console.error("FATAL ERROR during Firebase Initialization:", e);
-}
+  function setErr(msg) {
+    if (errEl) errEl.textContent = msg || "";
+    else if (msg) alert(msg);
+  }
 
-// --- PART 2: EVENT LISTENER LOGIC ---
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('loginForm');
-    if (!loginForm) return;
-    
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setErr("");
 
-        // Check if Firebase services are available
-        if (typeof auth === 'undefined' || typeof db === 'undefined') {
-            alert("CRITICAL ERROR: Firebase services are not available.");
-            return;
+    const email    = document.getElementById("email")?.value.trim();
+    const password = document.getElementById("password")?.value;
+    const role     = (roleSel() || "mother").toLowerCase();
+
+    if (!email) return setErr("Please enter your email.");
+    if (!password) return setErr("Please enter your password.");
+
+    try {
+      if (role === "provider") {
+        // ✅ Local auth
+        if (typeof PROVIDER_AUTH === "undefined") {
+          return setErr("Provider auth not loaded. Include ../../js/auth.js BEFORE login.js");
         }
+        const u = await PROVIDER_AUTH.login(email, password);
+        console.log("[provider login]", u);
+        window.location.href = "../provider/provider.html";
+        return;
+      }
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        // This is the new, critical line that reads the selected role
-        const selectedRole = document.querySelector('input[name="role"]:checked').value;
+      // ✅ Firebase path (mother/doctor)
+      const cred = await auth.signInWithEmailAndPassword(email, password);
+      const uid = cred.user.uid;
 
-        let userRoleFromDB = '';
+      // fetch user profile from Firestore
+      const snap = await firebase.firestore().collection("users").doc(uid).get();
+      const data = snap.exists ? snap.data() : {};
+      const roleFromDb = data.role || role;
 
-        // --- Firebase Interaction ---
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                // Go to the database to get the user's real role
-                return db.collection('users').doc(user.uid).get();
-            })
-            .then((doc) => {
-                if (doc.exists) {
-                    userRoleFromDB = doc.data().role;
-
-                    // IMPORTANT: Check if the selected role matches the user's actual role
-                    if (selectedRole !== userRoleFromDB) {
-                        // If they don't match, throw an error. This is a security feature.
-                        throw new Error(`Login failed. This account is registered as a "${userRoleFromDB}", not a "${selectedRole}".`);
-                    }
-                    
-                    alert("Login successful! Redirecting...");
-                    
-                    // Redirect based on the confirmed role
-                    if (userRoleFromDB === "doctor") {
-                        window.location.href = '../doctor-dashboard/doctor-dashboard.html'; 
-                    } else {
-                        window.location.href = '../mother-dashboard/mother-dashboard.html';
-                    }
-                } else {
-                    throw new Error("User data not found in database.");
-                }
-            })
-            .catch((error) => {
-                console.error("Login Error:", error.message);
-                alert("Login Failed: " + error.message);
-            });
-    });
-});
+      if (roleFromDb === "doctor") {
+        window.location.href = "../doctor-dashboard/doctor-dashboard.html";
+      } else {
+        window.location.href = "../mother-dashboard/mother-dashboard.html";
+      }
+    } catch (ex) {
+      console.error("[login] error:", ex);
+      setErr(ex?.message || "Login failed.");
+    }
+  });
+})();

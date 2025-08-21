@@ -1,43 +1,91 @@
-<!-- === File: views/register/register.html (FINAL, with working button) === -->
+<!-- === File: views/register/register.html (FIXED) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - MaaShishu Shurokkha</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/register.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - MaaShishu Shurokkha</title>
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/register.css">
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-box content-card">
-            <a href="../../index.html" class="auth-logo"><img src="../../logo.png" alt="Logo"></a>
-            <h2>Create Your Account</h2>
-            <p>Join our community for better health.</p>
-            <form id="registerForm">
-                <div class="form-group">
-                    <div class="role-selection">
-                        <div class="role-option"><input type="radio" id="roleMother" name="role" value="mother" required checked><label for="roleMother">Mother</label></div>
-                        <div class="role-option"><input type="radio" id="roleDoctor" name="role" value="doctor" required><label for="roleDoctor">Doctor</label></div>
-                    </div>
-                </div>
-                <div class="form-group"><label for="fullName">Full Name</label><input type="text" id="fullName" required></div>
-                <div class="form-group"><label for="email">Email</label><input type="email" id="email" required></div>
-                <div class="form-group"><label for="password">Password</label><input type="password" id="password" required></div>
-                <button type="submit" class="btn btn-primary">Create Account</button>
-            </form>
-            <p class="auth-switch">Already have an account? <a href="../login/login.html">Login</a></p>
-        </div>
-    </div>
+  <div class="auth-container">
+    <div class="auth-box content-card">
+      <a href="../../index.html" class="auth-logo"><img src="../../logo.png" alt="Logo"></a>
+      <h2>Create Your Account</h2>
+      <p>Join our community for better health.</p>
 
-    <!-- =================================================== -->
-    <!--      THE MISSING SCRIPT TAGS ARE NOW ADDED HERE     -->
-    <!-- =================================================== -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <!-- We use the all-in-one register.js which contains the config -->
-    <script src="../../js/register.js"></script>
-    <!-- =================================================== -->
+      <!-- IMPORTANT: id="f" and the IDs below must match register.js -->
+      <form id="f" novalidate>
+        <!-- Error line used by register.js setErr() -->
+        <p id="err" class="form-error" style="color:#e11d48;margin:.25rem 0 .75rem 0;"></p>
+
+        <!-- Role selection -->
+        <div class="form-group">
+          <div class="role-selection">
+            <div class="role-option">
+              <input type="radio" id="roleMother" name="role" value="mother" checked>
+              <label for="roleMother">Mother</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" id="roleDoctor" name="role" value="doctor">
+              <label for="roleDoctor">Doctor</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" id="roleProvider" name="role" value="provider">
+              <label for="roleProvider">Provider</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full name -->
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" required minlength="6">
+        </div>
+
+        <!-- Provider-only clinic selector (hidden until Provider picked) -->
+        <div id="clinicRow" class="form-group" style="display:none;">
+          <label for="clinic">Select Clinic / Hospital / Vaccine Center</label>
+          <select id="clinic">
+            <option value="">-- Select --</option>
+            <option value="Evercare Hospital Dhaka">Evercare Hospital Dhaka</option>
+            <option value="Labaid Specialized Hospital">Labaid Specialized Hospital</option>
+            <option value="Square Hospital">Square Hospital</option>
+            <option value="Dhaka Vaccine Center">Dhaka Vaccine Center</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Account</button>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="../login/login.html">Login</a></p>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (needed for mother/doctor) -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="../../js/firebase-config.js"></script>
+
+  <!-- Local provider auth (needed only if providers are local, not Firebase) -->
+  <script src="../../js/auth.js"></script>
+
+  <!-- Your handler (uses IDs above). It should contain the clinic validation:
+       if (role === "provider" && !clinic) setErr("Please select your clinic/hospital."); -->
+  <script src="../../js/register.js"></script>
 </body>
 </html>

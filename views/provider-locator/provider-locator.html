@@ -1,55 +1,160 @@
-<!-- === File: views/provider-locator/provider-locator.html (FINAL, Locations Version) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find a Provider - MaaShishu Shurokkha</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/mother-dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <meta charset="UTF-8">
+  <title>Find a Facility</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/mother-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    .facility-list{display:grid;gap:16px}
+    .facility-card{display:grid;grid-template-columns:auto 1fr 1fr auto;gap:16px;align-items:center}
+    .booking-section{display:flex;flex-direction:column;gap:8px}
+    .btn-secondary{background:#334155;color:#fff;border:1px solid #334155;border-radius:12px;padding:9px 12px;cursor:pointer}
+    .btn-secondary:hover{background:#1f2937}
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,.52);display:none;align-items:center;justify-content:center;z-index:50}
+    .modal.show{display:flex}
+    .modal-content{width:min(560px,92%);background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .form-row .full{grid-column:1 / -1}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group input,.form-group select{
+      padding:10px;border:1px solid #e5e7eb;border-radius:10px;outline:none
+    }
+    .form-group input:focus,.form-group select:focus{
+      border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.12)
+    }
+    .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+  </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-header"><a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a></div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
-                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
-                    <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
-                    <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
-                    <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
-                    <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
-                </ul>
-            </nav>
-            <div class="profile-switcher">
-                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>My Profile</span></a>
-                <a href="../child-dashboard/child-dashboard.html" class="profile-item"><div class="avatar avatar-child">CN</div><span>Child's Dashboard</span></a>
-            </div>
-        </aside>
-        <main class="main-content">
-            <header class="page-header"><h1>Find a Healthcare Provider</h1><p>Search for hospitals, clinics, and vaccination centers near you.</p></header>
-            <div class="page-controls-bar">
-                <form class="search-form">
-                    <input type="text" placeholder="Search by area (e.g., Gulshan, Dhaka)..." style="flex-grow: 1;">
-                    <button class="btn btn-primary">Search</button>
-                </form>
-            </div>
-            <div class="provider-list">
-                <div class="content-card location-card">
-                    <div class="location-icon"><i class="fa-solid fa-hospital"></i></div>
-                    <div class="location-info"><h3>Square Hospitals Ltd.</h3><p>18/F, Bir Uttam Qazi Nuruzzaman Sarak, Panthapath, Dhaka</p><div class="tags"><span class="tag">Hospital</span><span class="tag">Vaccination Center</span></div></div>
-                    <div class="location-actions"><p>Open 24 Hours</p><a href="#">View on Map</a></div>
-                </div>
-                <div class="content-card location-card">
-                    <div class="location-icon"><i class="fa-solid fa-clinic-medical"></i></div>
-                    <div class="location-info"><h3>Praava Health</h3><p>Plot 9, Road 17, Block C, Banani, Dhaka</p><div class="tags"><span class="tag">Family Health Clinic</span></div></div>
-                    <div class="location-actions"><p>Closes at 9 PM</p><a href="#">View on Map</a></div>
-                </div>
-            </div>
-        </main>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../mother-dashboard/mother-dashboard.html">
+          <img src="../../logo.png" alt=""><h3>MaaShishu Shurokkha</h3>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+          <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
+          <li class="active"><a href="#"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Facility</a></li>
+          <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Find a Vaccination Facility</h1>
+        <p>Book a vaccination slot for mother or child at a nearby center.</p>
+      </header>
+
+      <section class="facility-list">
+        <!-- Facility 1 -->
+        <div class="facility-card content-card"
+             data-facility='{
+               "facilityName":"Evercare Hospital Dhaka",
+               "facilityType":"Hospital",
+               "address":"Plot 81, Block E, Bashundhara R/A",
+               "schedule":{ "days":["Mon","Wed","Fri"], "blocks":[["09:00","12:00"],["14:00","16:00"]], "stepMinutes":30 }
+             }'>
+          <div class="doctor-avatar-initials avatar-gyn">EH</div>
+          <div>
+            <h3>Evercare Hospital Dhaka</h3>
+            <p class="meta">Hospital • Plot 81, Block E, Bashundhara R/A</p>
+          </div>
+          <div class="meta"><i class="fa-solid fa-clock"></i> Mon, Wed, Fri • 9–12 & 14–16</div>
+          <div class="booking-section">
+            <button class="btn-secondary book-vax">Book Vaccination</button>
+          </div>
+        </div>
+
+        <!-- Facility 2 -->
+        <div class="facility-card content-card"
+             data-facility='{
+               "facilityName":"Labaid Specialized Hospital",
+               "facilityType":"Hospital",
+               "address":"House 1, Road 4, Dhanmondi",
+               "schedule":{ "days":["Tue","Thu"], "blocks":[["17:00","20:00"]], "stepMinutes":15 }
+             }'>
+          <div class="doctor-avatar-initials avatar-gyn">LS</div>
+          <div>
+            <h3>Labaid Specialized Hospital</h3>
+            <p class="meta">Hospital • House 1, Road 4, Dhanmondi</p>
+          </div>
+          <div class="meta"><i class="fa-solid fa-clock"></i> Tue, Thu • 17–20</div>
+          <div class="booking-section">
+            <button class="btn-secondary book-vax">Book Vaccination</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Vaccination Booking Modal -->
+  <div id="vaxModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h3 style="margin:0 0 10px 0;">Book Vaccination Appointment</h3>
+      <form id="vaxForm">
+        <input type="hidden" id="facilityName">
+        <input type="hidden" id="facilityType">
+        <input type="hidden" id="facilityAddress">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Who is this for?</label>
+            <select id="patientType" required>
+              <option value="child" selected>Child</option>
+              <option value="mother">Mother</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label id="nameLabel">Child Name</label>
+            <input id="patientName" type="text" placeholder="e.g., Ali Rahman" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Guardian Name (optional)</label>
+            <input id="guardianName" type="text" placeholder="e.g., Nadia Rahman">
+          </div>
+          <div class="form-group">
+            <label>Vaccine</label>
+            <input id="vaccineCode" type="text" placeholder="e.g., PENTA, BCG" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <select id="slotDate" required></select>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <select id="slotTime" required></select>
+          </div>
+        </div>
+
+        <div class="form-row full">
+          <div class="form-group">
+            <label>Notes (optional)</label>
+            <input id="notes" type="text" placeholder="Bring vaccine card">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn" id="vaxCancel">Cancel</button>
+          <button type="submit" class="btn-secondary">Confirm Booking</button>
+        </div>
+      </form>
     </div>
+  </div>
+
+  <script src="../../js/vax-appointment-booking.js"></script>
+  <script src="provider-locator.js"></script>
 </body>
 </html>

@@ -1,66 +1,114 @@
-// This script runs when provider-locator.html is loaded.
+// provider-locator.js — facility-centric vaccination booking (localStorage)
 
-// In-memory data store for providers
-let providers = [
-    { id: 1, name: 'City General Hospital', type: 'Hospital', address: '123 Main St, Dhaka', phone: '02-1234567', services: 'Pediatrics, Gynecology, Emergency' },
-    { id: 2, name: 'Dr. Fatima Rahman Clinic', type: 'Clinic (Pediatrician)', address: '456 Oak Ave, Gulshan', phone: '01711-223344', services: 'Child Health, Vaccinations' },
-    { id: 3, name: 'Women & Child Care Center', type: 'Clinic (Gynecologist)', address: '789 Pine Ln, Mirpur', phone: '01912-556677', services: 'Maternal Care, Antenatal' },
-    { id: 4, name: 'Green Valley Hospital', type: 'Hospital', address: '101 Elm Rd, Dhanmondi', phone: '02-9876543', services: 'Pediatrics, Gynecology' },
-];
-let providerSearchQuery = '';
+(function(){
+  const vaxModal = document.getElementById("vaxModal");
+  const vaxForm  = document.getElementById("vaxForm");
 
-function renderProviderList() {
-    const filteredProviders = providers.filter(provider =>
-        provider.name.toLowerCase().includes(providerSearchQuery.toLowerCase()) ||
-        provider.address.toLowerCase().includes(providerSearchQuery.toLowerCase()) ||
-        provider.type.toLowerCase().includes(providerSearchQuery.toLowerCase())
-    );
+  const facilityNameEl = document.getElementById("facilityName");
+  const facilityTypeEl = document.getElementById("facilityType");
+  const facilityAddrEl = document.getElementById("facilityAddress");
 
-    const providerListContainer = document.getElementById('provider-list-container');
-    if (!providerListContainer) return;
+  const patientType  = document.getElementById("patientType");
+  const nameLabel    = document.getElementById("nameLabel");
+  const patientName  = document.getElementById("patientName");
 
-    let providerListHtml = '';
-    if (filteredProviders.length === 0) {
-        providerListHtml = '<div class="text-center text-gray-500 py-8">No healthcare providers found matching your search.</div>';
-    } else {
-        providerListHtml = `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                ${filteredProviders.map(provider => `
-                    <div class="bg-blue-50 p-6 rounded-lg shadow-md border border-blue-100 flex flex-col">
-                        <h4 class="text-xl font-semibold text-blue-800 mb-2">${provider.name}</h4>
-                        <p class="text-blue-600 font-medium mb-2">${provider.type}</p>
-                        <div class="text-gray-700 space-y-1 flex-grow">
-                            <p class="flex items-center"><i data-lucide="map-pin" class="mr-2 text-gray-500 w-4 h-4"></i> ${provider.address}</p>
-                            <p class="flex items-center"><i data-lucide="phone" class="mr-2 text-gray-500 w-4 h-4"></i> ${provider.phone}</p>
-                            <p class="flex items-center"><i data-lucide="heart-pulse" class="mr-2 text-gray-500 w-4 h-4"></i> Services: ${provider.services}</p>
-                        </div>
-                        <div class="mt-4 flex space-x-3">
-                            <a href="tel:${provider.phone}" class="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 transition">Call Now</a>
-                            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition">Get Directions</button>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
+  const guardianName = document.getElementById("guardianName");
+  const vaccineCode  = document.getElementById("vaccineCode");
+  const slotDate     = document.getElementById("slotDate");
+  const slotTime     = document.getElementById("slotTime");
+  const notes        = document.getElementById("notes");
+
+  const btnCancel    = document.getElementById("vaxCancel");
+
+  let currSlots = [];
+  let facility = {};
+
+  patientType.addEventListener("change", ()=>{
+    const mother = (patientType.value === "mother");
+    nameLabel.textContent = mother ? "Mother Name" : "Child Name";
+    patientName.placeholder = mother ? "e.g., Nadia Rahman" : "e.g., Ali Rahman";
+  });
+
+  // Open modal with facility context & schedule
+  document.querySelectorAll(".facility-card .book-vax").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const card = btn.closest(".facility-card");
+      facility = JSON.parse(card.getAttribute("data-facility") || "{}");
+
+      facilityNameEl.value = facility.facilityName || "";
+      facilityTypeEl.value = facility.facilityType || "";
+      facilityAddrEl.value = facility.address || "";
+
+      currSlots = (window.VAX_APPT?.getSlots?.(facility.schedule || {}, 21)) || [];
+
+      // dates
+      const dates = [...new Set(currSlots.map(s=>s.date))];
+      slotDate.innerHTML = dates.map(d=>`<option value="${d}">${d}</option>`).join("");
+
+      function refreshTimes(){
+        const d = slotDate.value;
+        const appts = window.VAX_APPT?.list?.() || [];
+        const taken = new Set(
+          appts
+            .filter(a =>
+              a.date === d &&
+              a.facilityName === facility.facilityName &&
+              a.status !== "cancelled"
+            )
+            .map(a => a.time)
+        );
+        const opts = currSlots
+          .filter(s => s.date===d && !taken.has(s.time))
+          .map(s => `<option value="${s.time}">${s.time}</option>`)
+          .join("");
+        slotTime.innerHTML = opts || `<option disabled selected>No times available</option>`;
+      }
+
+      slotDate.onchange = refreshTimes;
+      refreshTimes();
+
+      // reset
+      patientType.value = "child";
+      nameLabel.textContent = "Child Name";
+      patientName.value = ""; guardianName.value = ""; vaccineCode.value = ""; notes.value = "";
+
+      vaxModal.classList.add("show");
+      vaxModal.setAttribute("aria-hidden","false");
+    });
+  });
+
+  btnCancel.addEventListener("click", closeModal);
+  vaxModal.addEventListener("click", (e)=>{ if (e.target === vaxModal) closeModal(); });
+
+  function closeModal(){
+    vaxModal.classList.remove("show");
+    vaxModal.setAttribute("aria-hidden","true");
+    vaxForm.reset();
+  }
+
+  vaxForm.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    try{
+      if (!slotTime.value || slotTime.options[0]?.disabled) {
+        alert("No available times for the selected date.");
+        return;
+      }
+      window.VAX_APPT.book({
+        patientType: patientType.value,
+        patientName: patientName.value.trim(),
+        guardianName: guardianName.value.trim(),
+        facilityName: facilityNameEl.value,
+        facilityType: facilityTypeEl.value,
+        address: facilityAddrEl.value,
+        vaccineCode: vaccineCode.value.trim(),
+        date: slotDate.value,
+        time: slotTime.value,
+        notes: notes.value.trim()
+      });
+      alert("✅ Vaccination appointment booked.");
+      closeModal();
+    }catch(err){
+      alert(err.message || "Failed to book.");
     }
-    providerListContainer.innerHTML = providerListHtml;
-    window.createLucideIcons(); // Re-render icons for new content
-}
-
-function init() {
-    renderProviderList();
-
-    const searchInput = document.getElementById('provider-search-input');
-    if (searchInput) {
-        searchInput.value = providerSearchQuery; // Set initial value
-        searchInput.addEventListener('input', (e) => {
-            providerSearchQuery = e.target.value;
-            renderProviderList();
-        });
-    }
-}
-
-// Make the init function accessible globally
-window.provider_locator = {
-    init: init
-};
+  });
+})();
