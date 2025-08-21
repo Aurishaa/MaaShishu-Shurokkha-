@@ -1,39 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Find a Facility</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../../css/main.css">
-  <link rel="stylesheet" href="../../css/mother-dashboard.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>Find a Facility - MaaShishu Shurokkha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/mother-dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
-    .facility-list{display:grid;gap:16px}
-    .facility-card{display:grid;grid-template-columns:auto 1fr 1fr auto;gap:16px;align-items:center}
-    .booking-section{display:flex;flex-direction:column;gap:8px}
-    .btn-secondary{background:#334155;color:#fff;border:1px solid #334155;border-radius:12px;padding:9px 12px;cursor:pointer}
-    .btn-secondary:hover{background:#1f2937}
-    .modal{position:fixed;inset:0;background:rgba(2,6,23,.52);display:none;align-items:center;justify-content:center;z-index:50}
+    .page-header h1{margin:0 0 4px 0}
+
+    /* Top appointments list */
+    .appt-card{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+    .appt-empty{color:#64748b}
+    .badge.vax{display:inline-block;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;border-radius:999px;padding:2px 8px;font-size:12px;margin-left:6px}
+
+    /* Facility cards */
+    .facility-card{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;
+      background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px 18px}
+    .facility-badge{width:58px;height:58px;border-radius:14px;background:#f9c2c7;display:flex;align-items:center;justify-content:center;
+      font-weight:700;color:#9b4351}
+    .facility-name{font-weight:800;font-size:18px;margin:0 0 6px 0;color:#0f172a}
+    .facility-line{color:#64748b;margin:2px 0}
+    .facility-right{display:flex;align-items:center;gap:18px}
+    .facility-sep{width:100px;height:1px;background:#e5e7eb}
+    .btn{padding:.6rem .9rem;border-radius:12px;border:1px solid #cbd5e1;background:#0f172a;color:#fff;cursor:pointer}
+    .btn:hover{filter:brightness(1.06)}
+    .btn-primary{background:#1f2937;border-color:#1f2937}
+    .list{display:flex;flex-direction:column;gap:14px}
+
+    /* Booking modal */
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:center;justify-content:center;z-index:50}
     .modal.show{display:flex}
-    .modal-content{width:min(560px,92%);background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .form-row .full{grid-column:1 / -1}
+    .modal .modal-content{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;width:min(92%,760px)}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .form-group{display:flex;flex-direction:column;gap:6px}
-    .form-group input,.form-group select{
-      padding:10px;border:1px solid #e5e7eb;border-radius:10px;outline:none
-    }
-    .form-group input:focus,.form-group select:focus{
-      border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.12)
-    }
+    .form-group input,.form-group select{padding:10px;border:1px solid #e5e7eb;border-radius:12px}
     .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
   </style>
 </head>
 <body>
   <div class="dashboard-layout">
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <a href="../mother-dashboard/mother-dashboard.html">
-          <img src="../../logo.png" alt=""><h3>MaaShishu Shurokkha</h3>
+          <img src="../../logo.png" alt="Logo">
+          <h3>MaaShishu Shurokkha</h3>
         </a>
       </div>
       <nav class="sidebar-nav">
@@ -41,120 +55,366 @@
           <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
           <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
           <li class="active"><a href="#"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Facility</a></li>
+          <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Doctor Appointments</a></li>
           <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
         </ul>
       </nav>
     </aside>
 
+    <!-- Main -->
     <main class="main-content">
       <header class="page-header">
         <h1>Find a Vaccination Facility</h1>
         <p>Book a vaccination slot for mother or child at a nearby center.</p>
       </header>
 
-      <section class="facility-list">
-        <!-- Facility 1 -->
-        <div class="facility-card content-card"
-             data-facility='{
-               "facilityName":"Evercare Hospital Dhaka",
-               "facilityType":"Hospital",
-               "address":"Plot 81, Block E, Bashundhara R/A",
-               "schedule":{ "days":["Mon","Wed","Fri"], "blocks":[["09:00","12:00"],["14:00","16:00"]], "stepMinutes":30 }
-             }'>
-          <div class="doctor-avatar-initials avatar-gyn">EH</div>
+      <!-- 🔝 Vaccination Appointments LIVE list (localStorage) -->
+      <section class="content-card" style="margin-bottom:1rem">
+        <h3 class="section-header">Your Vaccination Appointments</h3>
+        <div id="vaxAppointmentsList"></div>
+      </section>
+
+      <!-- Facilities -->
+      <div class="list">
+        <!-- Evercare -->
+        <div class="facility-card">
+          <div class="facility-badge">EH</div>
           <div>
-            <h3>Evercare Hospital Dhaka</h3>
-            <p class="meta">Hospital • Plot 81, Block E, Bashundhara R/A</p>
+            <p class="facility-name">Evercare Hospital Dhaka</p>
+            <p class="facility-line">Hospital • Plot 81, Block E, Bashundhara R/A</p>
+            <p class="facility-line"><i class="fa-regular fa-clock"></i> Mon, Wed, Fri • 09–12 & 14–16</p>
           </div>
-          <div class="meta"><i class="fa-solid fa-clock"></i> Mon, Wed, Fri • 9–12 & 14–16</div>
-          <div class="booking-section">
-            <button class="btn-secondary book-vax">Book Vaccination</button>
+          <div class="facility-right">
+            <div class="facility-sep"></div>
+            <button
+              class="btn btn-primary book-vax"
+              data-facility-name="Evercare Hospital Dhaka"
+              data-facility-address="Plot 81, Block E, Bashundhara R/A"
+              data-vaccine-options="BCG,PENTA,PCV,OPV,MMR,TT"
+              data-slot-days="Mon,Wed,Fri"
+              data-slot-hours="09:00-12:00,14:00-16:00">
+              Book Vaccination
+            </button>
           </div>
         </div>
 
-        <!-- Facility 2 -->
-        <div class="facility-card content-card"
-             data-facility='{
-               "facilityName":"Labaid Specialized Hospital",
-               "facilityType":"Hospital",
-               "address":"House 1, Road 4, Dhanmondi",
-               "schedule":{ "days":["Tue","Thu"], "blocks":[["17:00","20:00"]], "stepMinutes":15 }
-             }'>
-          <div class="doctor-avatar-initials avatar-gyn">LS</div>
+        <!-- Labaid -->
+        <div class="facility-card">
+          <div class="facility-badge" style="background:#f7c5c8;color:#9b4351">LS</div>
           <div>
-            <h3>Labaid Specialized Hospital</h3>
-            <p class="meta">Hospital • House 1, Road 4, Dhanmondi</p>
+            <p class="facility-name">Labaid Specialized Hospital</p>
+            <p class="facility-line">Hospital • House 1, Road 4, Dhanmondi</p>
+            <p class="facility-line"><i class="fa-regular fa-clock"></i> Tue, Thu • 17–20</p>
           </div>
-          <div class="meta"><i class="fa-solid fa-clock"></i> Tue, Thu • 17–20</div>
-          <div class="booking-section">
-            <button class="btn-secondary book-vax">Book Vaccination</button>
+          <div class="facility-right">
+            <div class="facility-sep"></div>
+            <button
+              class="btn btn-primary book-vax"
+              data-facility-name="Labaid Specialized Hospital"
+              data-facility-address="House 1, Road 4, Dhanmondi"
+              data-vaccine-options="BCG,PENTA,PCV,OPV,MMR,TT"
+              data-slot-days="Tue,Thu"
+              data-slot-hours="17:00-20:00">
+              Book Vaccination
+            </button>
           </div>
         </div>
-      </section>
+      </div>
     </main>
   </div>
 
-  <!-- Vaccination Booking Modal -->
-  <div id="vaxModal" class="modal" aria-hidden="true">
+  <!-- Booking Modal -->
+  <div id="vaxBookingModal" class="modal">
     <div class="modal-content">
-      <h3 style="margin:0 0 10px 0;">Book Vaccination Appointment</h3>
-      <form id="vaxForm">
-        <input type="hidden" id="facilityName">
-        <input type="hidden" id="facilityType">
-        <input type="hidden" id="facilityAddress">
+      <div class="modal-head">
+        <h3><i class="fa-solid fa-syringe"></i> Book Vaccination</h3>
+        <button id="vbClose" class="btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
 
+      <form id="vbForm">
         <div class="form-row">
           <div class="form-group">
-            <label>Who is this for?</label>
-            <select id="patientType" required>
-              <option value="child" selected>Child</option>
+            <label>Patient Type</label>
+            <select id="vbPatientType">
+              <option value="child">Child</option>
               <option value="mother">Mother</option>
             </select>
           </div>
           <div class="form-group">
-            <label id="nameLabel">Child Name</label>
-            <input id="patientName" type="text" placeholder="e.g., Ali Rahman" required>
+            <label>Patient Name</label>
+            <input id="vbPatientName" type="text" placeholder="e.g., Ali Rahman / Nadia Rahman" required />
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Guardian Name (optional)</label>
-            <input id="guardianName" type="text" placeholder="e.g., Nadia Rahman">
+            <label>Vaccine</label>
+            <select id="vbVaccine"></select>
           </div>
           <div class="form-group">
-            <label>Vaccine</label>
-            <input id="vaccineCode" type="text" placeholder="e.g., PENTA, BCG" required>
+            <label>Dose</label>
+            <select id="vbDose"></select>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label>Date</label>
-            <select id="slotDate" required></select>
+            <input id="vbDate" type="date" required />
           </div>
           <div class="form-group">
             <label>Time</label>
-            <select id="slotTime" required></select>
+            <select id="vbTime" required></select>
           </div>
         </div>
 
-        <div class="form-row full">
+        <div class="form-row">
           <div class="form-group">
-            <label>Notes (optional)</label>
-            <input id="notes" type="text" placeholder="Bring vaccine card">
+            <label>Facility</label>
+            <input id="vbFacility" type="text" readonly />
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <input id="vbAddress" type="text" readonly />
           </div>
         </div>
 
         <div class="actions">
-          <button type="button" class="btn" id="vaxCancel">Cancel</button>
-          <button type="submit" class="btn-secondary">Confirm Booking</button>
+          <button type="button" id="vbCancel" class="btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Booking</button>
         </div>
       </form>
     </div>
   </div>
 
-  <script src="../../js/vax-appointment-booking.js"></script>
-  <script src="provider-locator.js"></script>
+  <!-- Appointment storage helpers -->
+  <script>
+    const APPT_KEY = "mss_vax_appointments";
+    function loadAppts(){ try { return JSON.parse(localStorage.getItem(APPT_KEY) || "[]"); } catch { return []; } }
+    function saveAppts(list){ try { localStorage.setItem(APPT_KEY, JSON.stringify(list)); } catch {} }
+    function createAppt(appt){
+      const list = loadAppts();
+      appt.id = "a_" + Math.random().toString(36).slice(2);
+      appt.status = "booked";
+      list.push(appt);
+      saveAppts(list);
+      return appt.id;
+    }
+  </script>
+
+  <!-- Booking UX + Top List Renderer (with Dose support) -->
+  <script>
+    (function(){
+      // ---------- Vaccine → max dose map ----------
+      const VAX_MAX_DOSES = {
+        BCG: 1,
+        PENTA: 3,
+        PCV: 3,
+        OPV: 4,
+        MMR: 2,
+        TT: 2
+      };
+
+      // ---------- DOM refs ----------
+      const listRoot = document.getElementById("vaxAppointmentsList");
+
+      const modal = document.getElementById("vaxBookingModal");
+      const closeBtn = document.getElementById("vbClose");
+      const cancelBtn = document.getElementById("vbCancel");
+      const form = document.getElementById("vbForm");
+
+      const patientTypeEl = document.getElementById("vbPatientType");
+      const patientNameEl = document.getElementById("vbPatientName");
+      const vaccineEl     = document.getElementById("vbVaccine");
+      const doseEl        = document.getElementById("vbDose");
+      const dateEl        = document.getElementById("vbDate");
+      const timeEl        = document.getElementById("vbTime");
+      const facilityEl    = document.getElementById("vbFacility");
+      const addressEl     = document.getElementById("vbAddress");
+
+      let activeFacility = { name:"", address:"", days:[], hours:[] };
+
+      // ---------- Appointments render ----------
+      function esc(s){ return (s||"").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+      function initials(t){ return (t||"VC").split(/\s+/).filter(Boolean).map(s=>s[0]).slice(0,2).join("").toUpperCase(); }
+      function prettyDate(ymd){
+        if (!ymd) return "";
+        const [y,m,d] = ymd.split("-").map(Number);
+        const dt = new Date(y,(m||1)-1,d||1);
+        return dt.toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+      }
+      function sortUpcoming(arr){
+        return arr
+          .filter(a=>a.status!=="cancelled")
+          .sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||"")));
+      }
+      function renderList(){
+        const items = sortUpcoming(loadAppts());
+        if (!items.length){
+          listRoot.innerHTML = `<p class="appt-empty">No vaccination appointments yet.</p>`;
+          return;
+        }
+        listRoot.innerHTML = items.map(a => `
+          <div class="appointment-list-item content-card appt-card">
+            <div class="doctor-avatar-initials avatar-gyn">${initials(a.facilityName)}</div>
+            <div class="doctor-info">
+              <h3>${esc(a.facilityName)} <span class="badge vax">Vaccination</span></h3>
+              <p class="muted">${esc(a.address || "")}</p>
+              <p><strong>${esc(a.patientName)}</strong> • ${a.patientType==="mother" ? "Mother" : "Child"}
+                 <span class="specialty specialty-gyn" style="margin-left:6px;">${esc(a.vaccineCode)} — Dose ${esc(String(a.dose||1))}</span>
+              </p>
+            </div>
+            <div class="appointment-details" style="text-align:right">
+              <p>${prettyDate(a.date)} at ${esc(a.time||"")}</p>
+              <div class="form-actions" style="display:flex;gap:8px;justify-content:flex-end">
+                <button class="btn" data-cancel="${a.id}">Cancel</button>
+                <button class="btn btn-primary" data-reschedule="${a.id}">Reschedule</button>
+              </div>
+            </div>
+          </div>
+        `).join("");
+
+        // actions
+        listRoot.querySelectorAll("[data-cancel]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = btn.getAttribute("data-cancel");
+            const list = loadAppts();
+            const i = list.findIndex(x=>x.id===id);
+            if (i>-1){ list[i].status="cancelled"; saveAppts(list); renderList(); }
+          });
+        });
+        listRoot.querySelectorAll("[data-reschedule]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            const id = btn.getAttribute("data-reschedule");
+            const list = loadAppts();
+            const i = list.findIndex(x=>x.id===id);
+            if (i===-1) return;
+            const newDate = prompt("New date (YYYY-MM-DD):", list[i].date);
+            const newTime = prompt("New time (HH:MM):", list[i].time||"");
+            if (newDate && newTime){ list[i].date=newDate; list[i].time=newTime; saveAppts(list); renderList(); }
+          });
+        });
+      }
+
+      // initial render + react to cross-tab updates
+      document.addEventListener("DOMContentLoaded", renderList);
+      window.addEventListener("storage", (e)=>{ if (e.key===APPT_KEY) renderList(); });
+
+      // ---------- Booking modal open ----------
+      document.querySelectorAll(".book-vax").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const name = btn.getAttribute("data-facility-name") || "";
+          const address = btn.getAttribute("data-facility-address") || "";
+          const vaxOptions = (btn.getAttribute("data-vaccine-options") || "BCG,PENTA,TT")
+                              .split(",").map(s=>s.trim()).filter(Boolean);
+          const days = (btn.getAttribute("data-slot-days") || "")
+                              .split(",").map(s=>s.trim()).filter(Boolean);     // e.g., Mon,Wed,Fri
+          const hours = (btn.getAttribute("data-slot-hours") || "")
+                              .split(",").map(s=>s.trim()).filter(Boolean);     // e.g., 09:00-12:00,14:00-16:00
+
+          activeFacility = { name, address, days, hours };
+
+          // fill
+          facilityEl.value = name;
+          addressEl.value  = address;
+
+          vaccineEl.innerHTML = vaxOptions.map(v=>`<option value="${v}">${v}</option>`).join("");
+          // set doses for the first vaccine
+          populateDoseFor(vaxOptions[0] || "BCG");
+
+          const today = new Date();
+          dateEl.value = nextAllowedDateISO(today, days);
+          renderTimeSlots(timeEl, hours);
+
+          patientTypeEl.value = "child";
+          patientNameEl.value = "";
+
+          showModal(true);
+        });
+      });
+
+      // When vaccine changes → update dose options (1..max)
+      vaccineEl.addEventListener("change", ()=>{
+        const vax = vaccineEl.value;
+        populateDoseFor(vax);
+      });
+
+      function populateDoseFor(vax){
+        const max = VAX_MAX_DOSES[vax] || 1;
+        const opts = [];
+        for (let i=1; i<=max; i++) opts.push(`<option value="${i}">${i}</option>`);
+        doseEl.innerHTML = opts.join("");
+        doseEl.value = "1";
+      }
+
+      // ---------- Modal helpers ----------
+      function showModal(v){ modal.classList.toggle("show", !!v); }
+      function close(){ showModal(false); form.reset(); }
+      closeBtn.addEventListener("click", close);
+      cancelBtn.addEventListener("click", close);
+      modal.addEventListener("click", e=>{ if(e.target===modal) close(); });
+
+      function renderTimeSlots(select, blocks){
+        const slots = [];
+        blocks.forEach(b=>{
+          const [start,end] = b.split("-");
+          const stepMin = 15;
+          let cur = toMinutes(start), stop = toMinutes(end);
+          while (cur < stop){ slots.push(fromMinutes(cur)); cur+=stepMin; }
+        });
+        select.innerHTML = slots.map(t=>`<option value="${t}">${t}</option>`).join("");
+      }
+      function toMinutes(hhmm){ const [h,m]=hhmm.split(":").map(Number); return h*60 + (m||0); }
+      function fromMinutes(min){ const h=String(Math.floor(min/60)).padStart(2,"0"); const m=String(min%60).padStart(2,"0"); return `${h}:${m}`; }
+      function toISO(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0"); return `${y}-${m}-${day}`; }
+      function nextAllowedDateISO(fromDate, days){
+        if (!days.length) return toISO(fromDate);
+        const map = {Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+        const allowed = days.map(d=>map[d]).filter(n=>n>=0);
+        for (let i=0;i<14;i++){
+          const d = new Date(fromDate); d.setDate(d.getDate()+i);
+          if (allowed.includes(d.getDay())) return toISO(d);
+        }
+        return toISO(fromDate);
+      }
+      function slug(s){ return (s||"").toLowerCase().replace(/[^a-z0-9]+/g,"").slice(0,12); }
+
+      // ---------- Save booking + re-render top list ----------
+      form.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        const patientType = patientTypeEl.value;
+        const patientName = patientNameEl.value.trim();
+        const vaccineCode = vaccineEl.value;
+        const dose        = Number(doseEl.value || 1);
+        const date        = dateEl.value;
+        const time        = timeEl.value;
+        const facilityName= facilityEl.value;
+        const address     = addressEl.value;
+
+        if (!patientType || !patientName || !vaccineCode || !date || !time || !facilityName) {
+          alert("Please fill all required fields.");
+          return;
+        }
+
+        createAppt({
+          patientType,
+          childId:  patientType==="child"  ? ("c_"+slug(patientName))  : null,
+          motherId: patientType==="mother" ? ("m_"+slug(patientName)) : null,
+          patientName,
+          vaccineCode,
+          dose,
+          date,
+          time,
+          facilityName,
+          address,
+          notes: ""
+        });
+
+        alert("✅ Vaccination appointment booked!");
+        close();
+        renderList(); // <— instantly shows it on top
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -1,78 +1,167 @@
-<!-- === File: views/vaccination-tracking/vaccination-tracking.html (Mother's Version) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Vaccinations - MaaShishu Shurokkha</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/mother-dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>Mother — Vaccination Tracking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/mother-dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    .toolbar {display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .toolbar .who-pill{background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;border-radius:999px;padding:6px 12px;font-weight:600}
+    .table{display:grid;gap:10px;margin-top:10px}
+    .thead,.tr{display:grid;grid-template-columns:1.1fr .8fr .9fr 1.6fr .7fr;align-items:center}
+    .thead{font-weight:700;color:#0f172a}
+    .tr{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px}
+    .muted{color:#64748b}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #e5e7eb;font-size:12px}
+    .badge-booked{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}
+    .badge-record{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+    .btn{padding:.55rem .85rem;border-radius:12px;border:1px solid #cbd5e1;background:#0f172a;color:#fff;cursor:pointer}
+    .btn:hover{filter:brightness(1.06)}
+    .btn-ghost{background:#fff;color:#0f172a}
+    .btn-danger{background:#991b1b;border-color:#991b1b;color:#fff}
+    .content-card h3.section-header{margin-bottom:.4rem}
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:center;justify-content:center;z-index:50}
+    .modal.show{display:flex}
+    .modal .modal-content{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;width:min(92%,760px)}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group input,.form-group select,.form-group textarea{padding:10px;border:1px solid #e5e7eb;border-radius:12px}
+    .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+  </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
-                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
-                    <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
-                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
-                    <li><a href="../community-support/community-support.html"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
-                    <li class="logout-link"><a id="logoutButton" href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
-                </ul>
-            </nav>
-            <div class="profile-switcher">
-                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item">
-                    <div class="avatar avatar-mother">MN</div>
-                    <span>My Profile</span>
-                </a>
-                <a href="../child-dashboard/child-dashboard.html" class="profile-item">
-                    <div class="avatar avatar-child">CN</div>
-                    <span>Child's Dashboard</span>
-                </a>
-            </div>
-        </aside>
-        <main class="main-content">
-            <header class="page-header">
-                <h1>My Vaccination Schedule</h1>
-                <p>Keep track of your personal immunizations, especially during pregnancy.</p>
-            </header>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../mother-dashboard/mother-dashboard.html">
+          <img src="../../logo.png" alt="Logo">
+          <h3>MaaShishu Shurokkha</h3>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
+          <li class="active"><a href="#"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination (Mother)</a></li>
+          <li><a href="../vaccination-tracking/child-vaccination.html"><i class="fa-solid fa-baby fa-fw"></i> Vaccination (Child)</a></li>
+          <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Facility</a></li>
+          <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Doctor Appointments</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-            <div class="content-card">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Vaccine</th>
-                            <th>Recommended For</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- This is an example of what the mother's data would look like -->
-                        <tr>
-                            <td>Tdap (Tetanus, Diphtheria, Pertussis)</td>
-                            <td>Each Pregnancy (27-36 weeks)</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>Influenza (Flu Shot)</td>
-                            <td>Annually</td>
-                            <td><span class="status-badge status-due">DUE</span></td>
-                        </tr>
-                        <tr>
-                            <td>COVID-19 Vaccine</td>
-                            <td>As per guidelines</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
+    <!-- Main -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Vaccination — Mother</h1>
+        <p>Track upcoming vaccination appointments and completed doses for the mother.</p>
+      </header>
+
+      <!-- Context -->
+      <section class="content-card">
+        <div class="toolbar">
+          <span class="who-pill">Mother</span>
+          <div class="form-group" style="min-width:260px">
+            <label for="whoName">Mother’s Name</label>
+            <input id="whoName" type="text" placeholder="e.g., Nadia Rahman">
+          </div>
+          <button id="applyPerson" class="btn">Apply</button>
+          <span id="personMeta" class="muted"></span>
+        </div>
+      </section>
+
+      <!-- Appointments -->
+      <section class="content-card" style="margin-top:1rem">
+        <h3 class="section-header">Upcoming Vaccination Appointments</h3>
+        <div class="table">
+          <div class="thead">
+            <div>Facility</div><div>Vaccine/Dose</div><div>Date & Time</div><div>Address</div><div>Action</div>
+          </div>
+          <div id="apptBody" class="tbody"></div>
+        </div>
+      </section>
+
+      <!-- History -->
+      <section class="content-card" style="margin-top:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 class="section-header">Vaccination History</h3>
+          <button id="openRecord" class="btn btn-primary"><i class="fa-solid fa-syringe"></i> Add Record</button>
+        </div>
+        <div class="table">
+          <div class="thead">
+            <div>Vaccine</div><div>Dose</div><div>Administered</div><div>Details</div><div>Status</div>
+          </div>
+          <div id="histBody" class="tbody"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Record Modal -->
+  <div id="recordModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3><i class="fa-solid fa-syringe"></i> Add Vaccination Record — Mother</h3>
+        <button id="closeModal" class="btn btn-ghost" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="recordForm">
+        <input id="rfType" type="hidden" value="mother" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input id="rfName" type="text" placeholder="Mother’s name" required />
+          </div>
+          <div class="form-group">
+            <label>Administered Date</label>
+            <input id="rfDate" type="date" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Vaccine</label>
+            <select id="rfVax"></select>
+          </div>
+          <div class="form-group">
+            <label>Dose</label>
+            <select id="rfDose"></select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Route</label>
+            <select id="rfRoute">
+              <option>IM</option><option>SC</option><option>PO</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Site</label>
+            <input id="rfSite" type="text" placeholder="Left Deltoid" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Lot / Batch # (optional)</label>
+          <input id="rfLot" type="text" placeholder="e.g., TT-9012" />
+        </div>
+
+        <div class="actions">
+          <button type="button" id="cancelModal" class="btn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Record</button>
+        </div>
+      </form>
     </div>
+  </div>
+
+  <script src="../../js/vaccination-tracking.js"></script>
+  <script>
+    VaxTrackingPage.init({ pageType: "mother" });
+  </script>
 </body>
 </html>
