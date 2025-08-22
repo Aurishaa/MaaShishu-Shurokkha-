@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "maashishu-shurokkha",
   storageBucket: "maashishu-shurokkha.appspot.com",
   messagingSenderId: "1020945509053",
-  appId: "1:1:1020945509053:web:6bb48ef986cd2752fd25d4" // I noticed a typo in the old App ID, this might be more correct
+  appId: "1:1020945509053:web:6bb48ef986cd2752fd25d4" // I noticed a typo in the old App ID, this might be more correct
 };
 
 firebase.initializeApp(firebaseConfig);

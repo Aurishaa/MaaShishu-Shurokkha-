@@ -1,4 +1,4 @@
-<!-- === File: views/register/register.html (FIXED) === -->
+<!-- === File: views/register/register.html === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +7,10 @@
   <title>Register - MaaShishu Shurokkha</title>
   <link rel="stylesheet" href="../../css/main.css">
   <link rel="stylesheet" href="../../css/register.css">
+  <style>
+    /* Hide clinic picker unless Provider is selected */
+    .provider-only { display: none; }
+  </style>
 </head>
 <body>
   <div class="auth-container">
@@ -15,12 +19,7 @@
       <h2>Create Your Account</h2>
       <p>Join our community for better health.</p>
 
-      <!-- IMPORTANT: id="f" and the IDs below must match register.js -->
-      <form id="f" novalidate>
-        <!-- Error line used by register.js setErr() -->
-        <p id="err" class="form-error" style="color:#e11d48;margin:.25rem 0 .75rem 0;"></p>
-
-        <!-- Role selection -->
+      <form id="registerForm">
         <div class="form-group">
           <div class="role-selection">
             <div class="role-option">
@@ -38,35 +37,34 @@
           </div>
         </div>
 
-        <!-- Full name -->
         <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" required>
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required>
         </div>
 
-        <!-- Email -->
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" required>
         </div>
 
-        <!-- Password -->
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" required minlength="6">
+          <input type="password" id="password" required>
         </div>
 
-        <!-- Provider-only clinic selector (hidden until Provider picked) -->
-        <div id="clinicRow" class="form-group" style="display:none;">
+        <!-- Provider clinic picker INSIDE the form -->
+        <div class="form-group provider-only" id="clinicRow">
           <label for="clinic">Select Clinic / Hospital / Vaccine Center</label>
           <select id="clinic">
             <option value="">-- Select --</option>
-            <option value="Evercare Hospital Dhaka">Evercare Hospital Dhaka</option>
-            <option value="Labaid Specialized Hospital">Labaid Specialized Hospital</option>
-            <option value="Square Hospital">Square Hospital</option>
-            <option value="Dhaka Vaccine Center">Dhaka Vaccine Center</option>
+            <option>Evercare Hospital Dhaka</option>
+            <option>Labaid Specialized Hospital</option>
+            <option>Square Hospital</option>
+            <option>Dhaka Vaccine Center</option>
           </select>
         </div>
+
+        <p id="err" class="form-error" style="color:#b91c1c;margin:.5rem 0 0"></p>
 
         <button type="submit" class="btn btn-primary">Create Account</button>
       </form>
@@ -75,17 +73,16 @@
     </div>
   </div>
 
-  <!-- Firebase SDKs (needed for mother/doctor) -->
+  <!-- Required script order -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="../../js/firebase-config.js"></script>
 
-  <!-- Local provider auth (needed only if providers are local, not Firebase) -->
+  <!-- Local provider auth (non-Firebase) -->
   <script src="../../js/auth.js"></script>
 
-  <!-- Your handler (uses IDs above). It should contain the clinic validation:
-       if (role === "provider" && !clinic) setErr("Please select your clinic/hospital."); -->
+  <!-- Your handler -->
   <script src="../../js/register.js"></script>
 </body>
 </html>
