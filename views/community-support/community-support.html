@@ -1,76 +1,168 @@
-<!-- === File: views/community-support/community-support.html (FINAL, CORRECTED VERSION) === -->
+<!-- === File: views/community-support/community-support.html === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Hub - MaaShishu Shurokkha</title>
-    <!-- Links to the main theme and its own correct stylesheet -->
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/community-support.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Community Hub - MaaShishu Shurokkha</title>
+  <link rel="stylesheet" href="../../css/main.css"/>
+  <link rel="stylesheet" href="../../css/community-support.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+  <style>
+    .reply-box { margin: 0.5rem 0 0.5rem 3rem; }
+    .reply { margin-left: 3rem; background: #f9f9f9; padding: 8px; border-radius: 6px; }
+    .post-card { margin-bottom: 1rem; }
+  </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <!-- This is the same sidebar structure as the Mother's Dashboard -->
-            <div class="sidebar-header">
-                <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house fa-fw"></i> Dashboard Home</a></li>
-                    <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen fa-fw"></i> Profile Management</a></li>
-                    <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe fa-fw"></i> Vaccination Tracking</a></li>
-                    <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
-                    <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot fa-fw"></i> Find a Provider</a></li>
-                    <li class="active"><a href="#"><i class="fa-solid fa-people-group fa-fw"></i> Community Support</a></li>
-                    <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
-                </ul>
-            </nav>
-            <div class="profile-switcher">
-                <a href="../mother-dashboard/mother-dashboard.html" class="profile-item"><div class="avatar avatar-mother">MN</div><span>My Profile</span></a>
-                <a href="../child-dashboard/child-dashboard.html" class="profile-item"><div class="avatar avatar-child">CN</div><span>Child's Dashboard</span></a>
-            </div>
-        </aside>
-        <main class="main-content">
-            <header class="page-header">
-                <h1>Community Hub</h1>
-                <p>Connect with other mothers, share your experiences, and ask questions.</p>
-            </header>
-            
-            <div class="forum-layout">
-                <section class="forum-feed">
-                    <div class="content-card ask-question-card">
-                        <form>
-                            <div class="form-group">
-                                <label for="new-post">Ask a question about pregnancy or postpartum...</label>
-                                <textarea id="new-post" placeholder="What's on your mind?"></textarea>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Post to Community</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="post-card content-card">
-                        <div class="post-header">
-                            <div class="avatar avatar-mother">AR</div>
-                            <div class="post-author-info"><h4>Anika Rahman</h4><p>Asked 2 hours ago</p></div>
-                        </div>
-                        <div class="post-body"><p>I'm in my 8th week and the nausea is really getting to me. Has anyone found anything that actually works?</p></div>
-                        <div class="post-actions"><a href="#"><i class="fa-solid fa-comment"></i> 12 Replies</a><a href="#"><i class="fa-solid fa-bookmark"></i> Save</a></div>
-                    </div>
-                </section>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../mother-dashboard/mother-dashboard.html"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha</h3></a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="../mother-dashboard/mother-dashboard.html"><i class="fa-solid fa-house"></i> Dashboard Home</a></li>
+          <li><a href="../profile-management/profile-management.html"><i class="fa-solid fa-user-pen"></i> Profile Management</a></li>
+          <li><a href="../vaccination-tracking/vaccination-tracking.html"><i class="fa-solid fa-syringe"></i> Vaccination Tracking</a></li>
+          <li><a href="../appointment-scheduling/appointment-scheduling.html"><i class="fa-solid fa-calendar-check"></i> Appointments</a></li>
+          <li><a href="../provider-locator/provider-locator.html"><i class="fa-solid fa-location-dot"></i> Find a Provider</a></li>
+          <li class="active"><a href="#"><i class="fa-solid fa-people-group"></i> Community Support</a></li>
+          <li class="logout-link"><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-                <aside class="forum-sidebar">
-                    <div class="widget content-card">
-                        <h3 class="widget-title">Need Professional Advice?</h3>
-                        <p>For personal medical questions, it's best to speak with a healthcare provider.</p>
-                        <a href="../appointment-scheduling/appointment-scheduling.html" class="btn btn-primary">Consult a Professional</a>
-                    </div>
-                </aside>
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Community Hub</h1>
+        <p>Connect with other mothers, share your experiences, and ask questions.</p>
+      </header>
+
+      <div class="forum-layout">
+        <section class="forum-feed">
+          <div class="content-card ask-question-card">
+            <form id="postForm">
+              <div class="form-group">
+                <label for="new-post">Ask a question or share something...</label>
+                <textarea id="new-post" placeholder="What's on your mind?"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Post to Community</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Where posts go -->
+          <div id="postsContainer"></div>
+        </section>
+
+        <aside class="forum-sidebar">
+          <div class="widget content-card">
+            <h3 class="widget-title">Need Professional Advice?</h3>
+            <p>For personal medical questions, it's best to speak with a healthcare provider.</p>
+            <a href="../appointment-scheduling/appointment-scheduling.html" class="btn btn-primary">Consult a Professional</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Dummy starter posts
+    const starterPosts = [
+      {
+        id: "p1",
+        author: "Anika Rahman",
+        time: "2 hours ago",
+        text: "I'm in my 8th week and nausea is really bad. Any tips?",
+        replies: [
+          { author: "Mina K.", text: "Ginger tea helped me a lot." },
+          { author: "Sara J.", text: "Try small meals more frequently." }
+        ]
+      },
+      {
+        id: "p2",
+        author: "Farhana Akter",
+        time: "1 day ago",
+        text: "How do you manage baby sleep routine?",
+        replies: [
+          { author: "Lima B.", text: "White noise worked wonders!" }
+        ]
+      }
+    ];
+
+    // Load posts from localStorage or use dummy
+    let posts = JSON.parse(localStorage.getItem("community_posts") || "null") || starterPosts;
+
+    const postsContainer = document.getElementById("postsContainer");
+    const postForm = document.getElementById("postForm");
+    const newPost = document.getElementById("new-post");
+
+    function renderPosts() {
+      postsContainer.innerHTML = "";
+      posts.forEach((p, i) => {
+        const div = document.createElement("div");
+        div.className = "post-card content-card";
+        div.innerHTML = `
+          <div class="post-header">
+            <div class="avatar avatar-mother">${p.author[0]}</div>
+            <div class="post-author-info"><h4>${p.author}</h4><p>${p.time}</p></div>
+          </div>
+          <div class="post-body"><p>${p.text}</p></div>
+          <div class="post-actions">
+            <a href="#" onclick="toggleReplies(${i}); return false;">
+              <i class="fa-solid fa-comment"></i> ${p.replies.length} Replies
+            </a>
+          </div>
+          <div id="replies-${i}" class="reply-section" style="display:none;">
+            ${p.replies.map(r => `<div class="reply"><b>${r.author}:</b> ${r.text}</div>`).join("")}
+            <div class="reply-box">
+              <input type="text" id="replyInput-${i}" placeholder="Write a reply..." />
+              <button onclick="addReply(${i})" class="btn btn-sm btn-primary">Reply</button>
             </div>
-        </main>
-    </div>
+          </div>
+        `;
+        postsContainer.appendChild(div);
+      });
+    }
+
+    // Add new post
+    postForm.addEventListener("submit", e => {
+      e.preventDefault();
+      if (!newPost.value.trim()) return;
+      posts.unshift({
+        id: "p" + Date.now(),
+        author: "You",
+        time: "Just now",
+        text: newPost.value.trim(),
+        replies: []
+      });
+      newPost.value = "";
+      saveAndRender();
+    });
+
+    // Reply functions
+    window.toggleReplies = i => {
+      const el = document.getElementById("replies-" + i);
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    };
+
+    window.addReply = i => {
+      const inp = document.getElementById("replyInput-" + i);
+      if (!inp.value.trim()) return;
+      posts[i].replies.push({ author: "You", text: inp.value.trim() });
+      inp.value = "";
+      saveAndRender();
+      toggleReplies(i);
+    };
+
+    function saveAndRender() {
+      localStorage.setItem("community_posts", JSON.stringify(posts));
+      renderPosts();
+    }
+
+    renderPosts();
+  </script>
 </body>
 </html>

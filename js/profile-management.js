@@ -1,95 +1,234 @@
-firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-        setupMotherProfile(user);
-        setupChildProfiles(user);
-    } else {
-        alert("You must be logged in to view this page.");
-        window.location.href = '../login/login.html';
-    }
-});
+// profile-management.js — wires your existing Profile page without changing UI.
+// Works with: Firebase (mother/doctor) and local provider auth (PROVIDER_AUTH).
 
-function setupMotherProfile(user) {
-    const userRef = firebase.firestore().collection('users').doc(user.uid);
-    const motherNameInput = document.getElementById('motherName');
-    const motherDobInput = document.getElementById('motherDob');
-    const motherPhoneInput = document.getElementById('motherPhone');
-    const motherAddressInput = document.getElementById('motherAddress');
-    const motherEmailInput = document.getElementById('motherEmail');
-    const motherAvatar = document.getElementById('motherAvatar');
+(function () {
+  // ------- selector helpers (don't change your HTML) -------
+  const $  = (sel, root=document) => root.querySelector(sel);
+  const byId = (id) => document.getElementById(id);
+  const firstOf = (candidates) => candidates.map(c => $(c)).find(Boolean) || null;
+  const initials = (t) => (t||"U").split(/\s+/).filter(Boolean).map(s=>s[0]).slice(0,2).join("").toUpperCase();
 
-    // Fetch and populate
-    userRef.get().then(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            motherNameInput.value = data.fullName || '';
-            motherDobInput.value = data.dob || '';
-            motherPhoneInput.value = data.phone || '';
-            motherAddressInput.value = data.address || '';
-            motherEmailInput.value = user.email || '';
-            motherAvatar.textContent = data.fullName?.charAt(0).toUpperCase() || 'M';
-        }
-    });
+  // Try common ids/names your page might already have
+  const form        = firstOf(["#profileForm", "form#f", ".profile-form", "form"]);
+  const pwdForm     = firstOf(["#passwordForm", ".password-form"]);
+  const logoutBtn   = firstOf(["#logoutBtn", ".logout-link a", "a.logout"]);
+  const saveMsg     = firstOf(["#saveMsg"]);
+  const pwdMsg      = firstOf(["#pwdMsg"]);
 
-    // Save form
-    const motherProfileForm = document.getElementById('motherProfileForm');
-    motherProfileForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        userRef.update({
-            fullName: motherNameInput.value,
-            dob: motherDobInput.value,
-            phone: motherPhoneInput.value,
-            address: motherAddressInput.value
-        }).then(() => {
-            alert("Mother profile updated.");
-            motherAvatar.textContent = motherNameInput.value.charAt(0).toUpperCase();
-        }).catch(err => alert("Error updating profile: " + err.message));
-    });
-}
+  const nameEl      = firstOf(["#fullName", "#name", '[name="name"]']);
+  const emailEl     = firstOf(["#email", '[name="email"]']);
+  const phoneEl     = firstOf(["#phone", '[name="phone"]']);
+  const addressEl   = firstOf(["#address", '[name="address"]']);
+  const dobEl       = firstOf(["#dob", '[name="dob"]']);
+  const clinicEl    = firstOf(["#clinic", '[name="clinic"]', "#clinicName"]);
+  const roleEl      = firstOf(["#role", '[name="role"]']);
 
-function setupChildProfiles(user) {
-    const childrenRef = firebase.firestore().collection('users').doc(user.uid).collection('children');
-    const childList = document.getElementById('childList');
+  const avatarInput = firstOf(["#avatarFile", '[name="avatar"]']);
+  const avatarView  = firstOf(["#avatarPreview", ".avatar-xl", ".avatar"]);
 
-    // Load all children
-    childrenRef.get().then(snapshot => {
-        childList.innerHTML = ''; // Clear previous
-        if (snapshot.empty) {
-            childList.innerHTML = '<p>No child profiles found.</p>';
-        } else {
-            snapshot.forEach(doc => {
-                const child = doc.data();
-                const childCard = document.createElement('div');
-                childCard.className = 'content-card';
-                childCard.innerHTML = `
-                    <strong>${child.name}</strong> (DOB: ${child.dob})<br>
-                    Gender: ${child.gender}, Blood Group: ${child.bloodGroup}<br>
-                    Weight: ${child.weight} kg<br>
-                    Allergies: ${child.allergies || 'None'}<br>
-                    Conditions: ${child.chronicConditions || 'None'}
-                `;
-                childList.appendChild(childCard);
-            });
-        }
-    });
+  const accNameEl   = firstOf(["#accountName"]);
+  const accRoleEl   = firstOf(["#accountRole"]);
+  const sidebarIni  = firstOf(["#sidebarInitials", ".avatar-mother"]);
 
-    // Handle add child form
-    const form = document.getElementById('childProfileForm');
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const child = {
-            name: document.getElementById('childName').value,
-            dob: document.getElementById('childDob').value,
-            gender: document.getElementById('childGender').value,
-            bloodGroup: document.getElementById('childBloodGroup').value,
-            weight: document.getElementById('childWeight').value,
-            allergies: document.getElementById('childAllergies').value,
-            chronicConditions: document.getElementById('childChronicConditions').value
+  // Optional sections that should toggle by mode
+  const firebaseOnly     = firstOf(["#firebaseOnly"]);
+  const providerOnlyNote = firstOf(["#providerOnlyNote"]);
+
+  // ------- state -------
+  let mode = "guest"; // "firebase" | "provider" | "guest"
+  let uid  = null;
+  let role = "mother";
+  let profile = {
+    name: "", email: "", phone: "", address: "", dob: "", clinic: "", role: "mother", avatarDataUrl: ""
+  };
+
+  // ------- local provider storage ----------
+  const LKEY = "mss_provider_profile";
+  function loadLocalProfile(id) {
+    const map = JSON.parse(localStorage.getItem(LKEY) || "{}");
+    return map[id] || null;
+  }
+  function saveLocalProfile(id, data) {
+    const map = JSON.parse(localStorage.getItem(LKEY) || "{}");
+    map[id] = data; localStorage.setItem(LKEY, JSON.stringify(map));
+  }
+
+  // ------- detect auth mode (no UI changes) -------
+  function detectAuth() {
+    try {
+      const prov = window.PROVIDER_AUTH?.current?.();
+      if (prov && prov.role === "provider") {
+        mode = "provider";
+        uid  = prov.id;
+        role = "provider";
+        profile = loadLocalProfile(uid) || {
+          name: prov.name || "Provider",
+          email: prov.email || "",
+          phone: "", address: "", dob: "",
+          clinic: prov.clinicName || prov.clinic || "",
+          role: "provider",
+          avatarDataUrl: ""
         };
+        return;
+      }
+    } catch {}
 
-        childrenRef.add(child).then(() => {
-            alert("Child profile saved.");
-            form.reset();
-            setupChildProfiles(user); // reload list
-        }).catch(err => alert("Failed to save child: " + err.message));
+    // If Firebase is present, we’ll wait for onAuthStateChanged
+    try {
+      if (window.firebase?.auth) {
+        const u = firebase.auth().currentUser;
+        if (u) { mode = "firebase"; uid = u.uid; }
+        else   { mode = "guest"; }
+      } else {
+        mode = "guest";
+      }
+    } catch { mode = "guest"; }
+  }
+
+  // ------- Firebase profile load/save (mother/doctor) -------
+  async function loadFirebaseProfile() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    const doc = await firebase.firestore().collection("users").doc(user.uid).get();
+    const data = doc.exists ? doc.data() : {};
+    role = data.role || "mother";
+    profile = {
+      name: data.name || user.displayName || "User",
+      email: user.email || data.email || "",
+      phone: data.phone || "",
+      address: data.address || "",
+      dob: data.dob || "",
+      clinic: data.clinicName || "",
+      role: role,
+      avatarDataUrl: data.avatarDataUrl || ""
+    };
+  }
+
+  async function saveFirebaseProfile() {
+    if (!uid) return;
+    const db = firebase.firestore();
+    await db.collection("users").doc(uid).set({
+      name: profile.name,
+      phone: profile.phone,
+      address: profile.address,
+      dob: profile.dob,
+      clinicName: profile.clinic,
+      role: role,
+      avatarDataUrl: profile.avatarDataUrl || ""
+    }, { merge: true });
+  }
+
+  // ------- render (keeps your UI) -------
+  function render() {
+    if (nameEl)    nameEl.value = profile.name || "";
+    if (emailEl)   { emailEl.value = profile.email || ""; emailEl.disabled = true; }
+    if (phoneEl)   phoneEl.value = profile.phone || "";
+    if (addressEl) addressEl.value = profile.address || "";
+    if (dobEl)     dobEl.value = profile.dob || "";
+    if (clinicEl)  clinicEl.value = profile.clinic || "";
+    if (roleEl)    { roleEl.value = profile.role || role || ""; roleEl.disabled = true; }
+
+    const ini = initials(profile.name);
+    if (avatarView) {
+      if (profile.avatarDataUrl) {
+        avatarView.style.backgroundImage = `url(${profile.avatarDataUrl})`;
+        avatarView.style.backgroundSize = "cover";
+        avatarView.style.backgroundPosition = "center";
+        avatarView.textContent = "";
+      } else {
+        avatarView.style.backgroundImage = "none";
+        avatarView.textContent = ini;
+      }
+    }
+    if (sidebarIni) sidebarIni.textContent = ini;
+    if (accNameEl)  accNameEl.textContent = profile.name || "User";
+    if (accRoleEl)  accRoleEl.textContent = profile.role || role || "member";
+
+    if (firebaseOnly)     firebaseOnly.style.display     = (mode === "firebase") ? "block" : "none";
+    if (providerOnlyNote) providerOnlyNote.style.display = (mode === "provider") ? "block" : "none";
+  }
+
+  function showSaved() {
+    if (!saveMsg) return;
+    saveMsg.style.display = "inline";
+    setTimeout(()=> saveMsg.style.display = "none", 1400);
+  }
+
+  // ------- events (no UI changes) -------
+  // Avatar preview (local only)
+  avatarInput?.addEventListener("change", (e)=>{
+    const f = e.target.files?.[0]; if (!f) return;
+    if (!/^image\//.test(f.type)) { alert("Please select an image file."); return; }
+    const reader = new FileReader();
+    reader.onload = () => { profile.avatarDataUrl = reader.result; render(); };
+    reader.readAsDataURL(f);
+  });
+
+  form?.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    // collect
+    profile.name    = nameEl?.value?.trim() || profile.name;
+    profile.phone   = phoneEl?.value?.trim() || "";
+    profile.address = addressEl?.value?.trim() || "";
+    profile.dob     = dobEl?.value || "";
+    profile.clinic  = clinicEl?.value || profile.clinic;
+
+    try {
+      if (mode === "provider") {
+        saveLocalProfile(uid, profile);
+      } else if (mode === "firebase") {
+        await saveFirebaseProfile();
+      }
+      showSaved();
+    } catch (err) {
+      console.error(err); alert(err?.message || "Failed to save profile.");
+    }
+  });
+
+  pwdForm?.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    if (mode !== "firebase") return;
+    const newPw = byId("newPassword")?.value?.trim();
+    if (!newPw || newPw.length < 6) { alert("Password must be at least 6 characters."); return; }
+    try {
+      await firebase.auth().currentUser.updatePassword(newPw);
+      byId("newPassword").value = "";
+      if (pwdMsg) { pwdMsg.style.display = "inline"; setTimeout(()=> pwdMsg.style.display = "none", 1400); }
+    } catch (err) {
+      console.error(err);
+      alert(err?.message || "Failed to update password. Please reauthenticate and try again.");
+    }
+  });
+
+  logoutBtn?.addEventListener("click", async (e)=>{
+    e.preventDefault();
+    try {
+      if (mode === "firebase") await firebase.auth().signOut();
+      if (mode === "provider") window.PROVIDER_AUTH?.logout?.();
+    } catch {}
+    location.href = "../login/login.html";
+  });
+
+  // ------- boot -------
+  detectAuth();
+
+  if (mode === "provider") {
+    render();
+  } else if (window.firebase?.auth) {
+    firebase.auth().onAuthStateChanged(async (user)=>{
+      if (user) {
+        mode = "firebase"; uid = user.uid;
+        await loadFirebaseProfile();
+      } else {
+        mode = "guest";
+        profile = { name: "Guest", email: "", phone:"", address:"", dob:"", clinic:"", role:"mother", avatarDataUrl:"" };
+      }
+      render();
     });
-}
+  } else {
+    // no auth at all (pure static)
+    mode = "guest";
+    profile = { name: "Guest", email: "", phone:"", address:"", dob:"", clinic:"", role:"mother", avatarDataUrl:"" };
+    render();
+  }
+})();
