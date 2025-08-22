@@ -1,59 +1,342 @@
-<!-- === File: views/doctor-dashboard/doctor-dashboard.html (FINAL, FULLY LINKED) === -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Portal - MaaShishu Shurokkha</title>
-    <link rel="stylesheet" href="../../css/main.css">
-    <link rel="stylesheet" href="../../css/mother-dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>Doctor Dashboard - MaaShishu Shurokkha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Reuse your app theme for consistent look -->
+  <link rel="stylesheet" href="../../css/main.css" />
+  <link rel="stylesheet" href="../../css/mother-dashboard.css" />
+  <link rel="stylesheet" href="../../css/doctor-dashboard.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style>
+    /* Tiny utility styles used by this page */
+    .muted{color:#64748b}
+    .chip{background:#f1f5f9;color:#0f172a;padding:6px 10px;border-radius:999px;font-size:13px}
+
+    /* KPIs */
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
+    .kpi{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+    .kpi .icon{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;background:#f1f5f9}
+    .kpi .value{font-size:20px;font-weight:700}
+
+    /* Tables */
+    .table .thead,.table .tr{display:grid;grid-template-columns:120px 1fr 140px 120px 220px;gap:12px}
+    .table .thead{font-weight:700;color:#64748b;margin-bottom:6px}
+    .table .tbody>.tr{padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#fff;margin-bottom:8px}
+
+    /* Badges */
+    .badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px}
+    .badge.pending{background:#fff7ed;color:#9a3412}
+    .badge.confirmed{background:#ecfeff;color:#155e75}
+    .badge.rescheduled{background:#fef3c7;color:#92400e}
+    .badge.completed{background:#ecfccb;color:#365314}
+    .badge.cancelled{background:#fee2e2;color:#7f1d1d}
+    .badge.declined{background:#ffe4e6;color:#9f1239}
+
+    /* Tabs */
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
+    .tabs .tab{padding:8px 12px;border-radius:999px;border:1px solid #e5e7eb;background:#fff;cursor:pointer}
+    .tabs .tab.active{background:#111827;color:#fff;border-color:#111827}
+    .section{display:none}
+    .section.active{display:block}
+
+    /* Forms */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .form-grid .form-group{display:flex;flex-direction:column}
+    .form-group label{font-weight:600;margin-bottom:6px}
+    .form-group input,.form-group select,.form-group textarea{border:1px solid #e5e7eb;border-radius:8px;padding:10px;width:100%}
+    .form-actions{display:flex;gap:8px;justify-content:flex-end}
+
+    /* Modals */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center}
+    .modal.hidden{display:none}
+    .modal .modal-content{background:#fff;border-radius:12px;max-width:640px;width:92%;padding:16px}
+    .modal .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .icon-btn{border:none;background:transparent;cursor:pointer;font-size:20px}
+  </style>
 </head>
 <body>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-header"><a href="#"><img src="../../logo.png" alt="Logo"><h3>MaaShishu Shurokkha </h3></a></div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="active"><a href="#"><i class="fa-solid fa-notes-medical fa-fw"></i> Dashboard</a></li>
-                    <li><a href="../my-patients.html"><i class="fa-solid fa-users fa-fw"></i> My Patients</a></li>
-                    
-                    <li><a href="../my-schedule/my-schedule.html"><i class="fa-solid fa-users fa-fw"></i> View Schedule</a></li>
-                    <li><a href="../lab-results/lab-results.html"><i class="fa-solid fa-users fa-fw"></i>Review Results</a></li ><!-- Replace with this new, more robust line -->
-<li class="logout-link"><a id="logoutButton" href="../login/login.html"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>      </nav>
+  <div class="dashboard-layout">
+    <!-- Sidebar (doctor-only) -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../doctor-dashboard/doctor-dashboard.html">
+          <img src="../../logo.png" alt="Logo" />
+          <h3>MaaShishu Shurokkha</h3>
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active"><a href="#" data-nav="overview"><i class="fa-solid fa-gauge-high fa-fw"></i> Overview</a></li>
+          <li><a href="#" data-nav="appointments"><i class="fa-solid fa-calendar-check fa-fw"></i> Appointments</a></li>
+          <li><a href="#" data-nav="patients"><i class="fa-solid fa-user-group fa-fw"></i> Patients</a></li>
+          <li><a href="#" data-nav="messages"><i class="fa-solid fa-inbox fa-fw"></i> Messages</a></li>
+          <li><a href="#" data-nav="prescriptions"><i class="fa-solid fa-prescription-bottle-medical fa-fw"></i> Prescriptions</a></li>
+          <li><a href="#" data-nav="vaccinations"><i class="fa-solid fa-syringe fa-fw"></i> Vaccinations</a></li>
+          <li><a href="#" data-nav="availability"><i class="fa-solid fa-clock fa-fw"></i> Availability</a></li>
+          <li><a href="#" data-nav="settings"><i class="fa-solid fa-gear fa-fw"></i> Settings</a></li>
+          <li class="logout-link"><a href="../login/login.html"><i class="fa-solid fa-right-from-bracket fa-fw"></i> Logout</a></li>
+        </ul>
+      </nav>
+      <!-- No profile switcher here (doctor-only surface) -->
+    </aside>
 
-            <div class="profile-switcher">
-                <div class="profile-item">
-                    <div class="avatar" style="background-color: #6c757d; color: white;">DR</div>
-                    <span>Dr. [Doctor's Name]</span>
-                </div>
+    <!-- Main -->
+    <main class="main-content">
+      <header class="page-header" style="display:flex;align-items:center;gap:12px">
+        <div>
+          <h1>Doctor Dashboard</h1>
+          <p class="muted">Manage your schedule, patients, and clinical records.</p>
+        </div>
+        <span class="chip" style="margin-left:auto"><i class="fa-solid fa-user-doctor"></i> <span id="doctorName">Doctor</span></span>
+      </header>
+
+      <!-- Tabs -->
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-section="overview">Overview</button>
+        <button class="tab" data-section="appointments">Appointments</button>
+        <button class="tab" data-section="patients">Patients</button>
+        <button class="tab" data-section="messages">Messages</button>
+        <button class="tab" data-section="prescriptions">Prescriptions</button>
+        <button class="tab" data-section="vaccinations">Vaccinations</button>
+        <button class="tab" data-section="availability">Availability</button>
+        <button class="tab" data-section="settings">Settings</button>
+      </div>
+
+      <!-- Overview -->
+      <section class="section active" id="section-overview">
+        <div class="kpis">
+          <div class="kpi">
+            <div class="icon"><i class="fa-solid fa-inbox"></i></div>
+            <div><div class="label muted">Pending Requests</div><div class="value" id="kpiPending">0</div></div>
+          </div>
+          <div class="kpi">
+            <div class="icon"><i class="fa-solid fa-calendar-day"></i></div>
+            <div><div class="label muted">Today’s Appointments</div><div class="value" id="kpiToday">0</div></div>
+          </div>
+          <div class="kpi">
+            <div class="icon"><i class="fa-solid fa-hospital"></i></div>
+            <div><div class="label muted">Clinic</div><div class="value" id="kpiClinic">—</div></div>
+          </div>
+        </div>
+
+        <div class="content-card">
+          <h3 class="section-header">Quick Actions</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" id="qaOpenAppts"><i class="fa-solid fa-calendar-check"></i> Open Appointments</button>
+            <button class="btn" id="qaWriteRx"><i class="fa-solid fa-prescription-bottle-medical"></i> Write Prescription</button>
+            <button class="btn" id="qaRecordVax"><i class="fa-solid fa-syringe"></i> Record Vaccination</button>
+            <button class="btn" id="qaSetAvail"><i class="fa-solid fa-clock"></i> Set Availability</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Appointments -->
+      <section class="section" id="section-appointments">
+        <div class="content-card">
+          <h3 class="section-header">Pending Requests</h3>
+          <div class="table">
+            <div class="thead">
+              <div>Date</div><div>Patient</div><div>Status</div><div>Slot</div><div>Action</div>
             </div>
-        </aside>
-        <main class="main-content">
-            <header class="main-content-header">
-                <h1>Welcome, Dr. [Doctor's Name]</h1>
-                <p>Here is a summary of your patient activity and schedule for today.</p>
-            </header>
-            <div class="dashboard-grid">
-                <div class="dashboard-card content-card">
-                    <div class="card-header"><div class="icon"><i class="fa-solid fa-calendar-day"></i></div><h3>Today's Appointments</h3></div>
-                    <div class="card-body">
-                        <p>You have <strong>8 appointments</strong> scheduled for today. Your next is in 15 minutes.</p>
-                        <a href="../my-schedule/my-schedule.html" class="btn btn-primary">View Schedule</a>
-                    </div>
-                </div>
-                <div class="dashboard-card content-card">
-                    <div class="card-header">
-                        <div class="icon" style="background-color: rgba(42, 157, 143, 0.1); color: #1e7d72;"><i class="fa-solid fa-vial-virus"></i></div>
-                        <h3>New Lab Results</h3>
-                    </div>
-                    <div class="card-body">
-                        <p>You have <strong>5 new lab results</strong> to review for your patients today.</p>
-                        <a href="../lab-results/lab-results.html" class="btn btn-primary">Review Results</a>
-                    </div>
-                </div>
+            <div class="tbody" id="requestsTbody"></div>
+          </div>
+        </div>
+        <div class="content-card" style="margin-top:12px">
+          <h3 class="section-header">Today’s Schedule</h3>
+          <div class="table">
+            <div class="thead">
+              <div>Time</div><div>Patient</div><div>Status</div><div>Type</div><div>Action</div>
             </div>
-        </main>
+            <div class="tbody" id="todayTbody"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Patients -->
+      <section class="section" id="section-patients">
+        <div class="content-card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="patientSearch">Search Patients</label>
+              <input id="patientSearch" type="text" placeholder="Type name..." />
+            </div>
+            <div class="form-group">
+              <label>&nbsp;</label>
+              <button class="btn" id="btnAddPatient"><i class="fa-solid fa-user-plus"></i> Add Patient</button>
+            </div>
+          </div>
+        </div>
+        <div class="content-card" style="margin-top:12px">
+          <h3 class="section-header">Patient Roster</h3>
+          <div id="patientsList"></div>
+        </div>
+      </section>
+
+      <!-- Messages -->
+      <section class="section" id="section-messages">
+        <div class="content-card">
+          <h3 class="section-header">Inbox</h3>
+          <div id="messagesList"></div>
+        </div>
+        <div class="content-card" style="margin-top:12px">
+          <h3 class="section-header">Compose</h3>
+          <div class="form-grid">
+            <div class="form-group"><label for="msgTo">To (name)</label><input id="msgTo" type="text" placeholder="Patient name" /></div>
+            <div class="form-group"><label for="msgBody">Message</label><textarea id="msgBody" placeholder="Write your message..."></textarea></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" id="sendMsg"><i class="fa-solid fa-paper-plane"></i> Send</button></div>
+        </div>
+      </section>
+
+      <!-- Prescriptions -->
+      <section class="section" id="section-prescriptions">
+        <div class="content-card">
+          <h3 class="section-header">New Prescription</h3>
+          <div class="form-grid">
+            <div class="form-group"><label for="rxPatient">Patient</label><input id="rxPatient" type="text" placeholder="Patient full name" /></div>
+            <div class="form-group"><label for="rxDrug">Medicine</label><input id="rxDrug" type="text" placeholder="Drug name" /></div>
+            <div class="form-group"><label for="rxDose">Dose & Frequency</label><input id="rxDose" type="text" placeholder="e.g. 500mg 3x/day" /></div>
+            <div class="form-group"><label for="rxNotes">Notes</label><input id="rxNotes" type="text" placeholder="With food, 5 days, etc." /></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" id="saveRx"><i class="fa-solid fa-plus"></i> Save Prescription</button></div>
+        </div>
+        <div class="content-card" style="margin-top:12px">
+          <h3 class="section-header">Prescriptions Log</h3>
+          <div id="rxList"></div>
+        </div>
+      </section>
+
+      <!-- Vaccinations -->
+      <section class="section" id="section-vaccinations">
+        <div class="content-card">
+          <h3 class="section-header">Record a Vaccination</h3>
+          <div class="form-grid">
+            <div class="form-group"><label for="vaxPatient">Child Name</label><input id="vaxPatient" type="text" placeholder="Child name" /></div>
+            <div class="form-group"><label for="vaxCode">Vaccine Code</label><input id="vaxCode" type="text" placeholder="PENTA / BCG / MR" /></div>
+            <div class="form-group"><label for="vaxDose">Dose #</label><input id="vaxDose" type="number" min="1" step="1" placeholder="1" /></div>
+            <div class="form-group"><label for="vaxDate">Date</label><input id="vaxDate" type="date" /></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" id="saveVax"><i class="fa-solid fa-syringe"></i> Save Vaccination</button></div>
+        </div>
+        <div class="content-card" style="margin-top:12px">
+          <h3 class="section-header">Recent Vaccinations</h3>
+          <div id="vaxList"></div>
+        </div>
+      </section>
+
+      <!-- Availability -->
+      <section class="section" id="section-availability">
+        <div class="content-card">
+          <h3 class="section-header">Weekly Availability</h3>
+          <div class="form-grid">
+            <div class="form-group"><label for="daySelect">Day</label>
+              <select id="daySelect">
+                <option value="Mon">Mon</option><option value="Tue">Tue</option><option value="Wed">Wed</option>
+                <option value="Thu">Thu</option><option value="Fri">Fri</option><option value="Sat">Sat</option><option value="Sun">Sun</option>
+              </select>
+            </div>
+            <div class="form-group"><label for="fromTime">From</label><input id="fromTime" type="time" /></div>
+            <div class="form-group"><label for="toTime">To</label><input id="toTime" type="time" /></div>
+            <div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addSlot"><i class="fa-solid fa-plus"></i> Add Slot</button></div>
+          </div>
+        </div>
+        <div class="content-card" style="margin-top:12px">
+          <h3 class="section-header">Your Slots</h3>
+          <div id="slotsList"></div>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section class="section" id="section-settings">
+        <div class="content-card">
+          <h3 class="section-header">Profile Settings</h3>
+          <div class="form-grid">
+            <div class="form-group"><label for="setName">Display Name</label><input id="setName" type="text" placeholder="Prof. Dr. ..." /></div>
+            <div class="form-group"><label for="setClinic">Clinic / Hospital</label><input id="setClinic" type="text" placeholder="Your clinic name" /></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" id="saveSettings"><i class="fa-solid fa-floppy-disk"></i> Save</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Quick-action Modals -->
+  <div id="modalRx" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3><i class="fa-solid fa-prescription-bottle-medical"></i> New Prescription</h3>
+        <button class="icon-btn" data-close-rx><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Patient</label><input id="mxPatient" type="text"></div>
+        <div class="form-group"><label>Medicine</label><input id="mxDrug" type="text"></div>
+        <div class="form-group"><label>Dose & Frequency</label><input id="mxDose" type="text"></div>
+        <div class="form-group"><label>Notes</label><input id="mxNotes" type="text"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" data-close-rx>Cancel</button>
+        <button class="btn btn-primary" id="mxSave">Save</button>
+      </div>
     </div>
+  </div>
+
+  <div id="modalVax" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3><i class="fa-solid fa-syringe"></i> Record Vaccination</h3>
+        <button class="icon-btn" data-close-vx><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Child Name</label><input id="mvChild" type="text"></div>
+        <div class="form-group"><label>Vaccine Code</label><input id="mvCode" type="text"></div>
+        <div class="form-group"><label>Dose #</label><input id="mvDose" type="number" min="1"></div>
+        <div class="form-group"><label>Date</label><input id="mvDate" type="date"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" data-close-vx>Cancel</button>
+        <button class="btn btn-primary" id="mvSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalAvail" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-head">
+        <h3><i class="fa-solid fa-clock"></i> Add Availability</h3>
+        <button class="icon-btn" data-close-av><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label>Day</label>
+          <select id="maDay"><option>Mon</option><option>Tue</option><option>Wed</option><option>Thu</option><option>Fri</option><option>Sat</option><option>Sun</option></select>
+        </div>
+        <div class="form-group"><label>From</label><input id="maFrom" type="time"></div>
+        <div class="form-group"><label>To</label><input id="maTo" type="time"></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn" data-close-av>Cancel</button>
+        <button class="btn btn-primary" id="maSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page logic -->
+  <script src="../../js/doctor-dashboard.js"></script>
+
+  <!-- Small inline helper: Quick Action "Open Appointments" switches tab without leaving page -->
+  <script>
+    document.getElementById("qaOpenAppts")?.addEventListener("click", function(){
+      document.querySelectorAll("#tabs .tab").forEach(b=>b.classList.remove("active"));
+      document.querySelector('#tabs .tab[data-section="appointments"]')?.classList.add("active");
+      document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+      document.getElementById("section-appointments")?.classList.add("active");
+    });
+  </script>
+  <!-- Page logic -->
+<script src="../../js/doctor-dashboard.js"></script>
+
 </body>
 </html>
